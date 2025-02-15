@@ -6,6 +6,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+  min-height: 100vh;
 }
 
 code {
@@ -34,66 +36,72 @@ h1 {
 
 /* 计算器显示区域 */
 .calculator-display {
-  background: #f8f9fa;
-  border: 1px solid #333;
-  border-radius: 12px;
+  background: #92f6b0;
+  border: none;
+  border-radius: 16px;
   padding: 30px;
   margin-bottom: 30px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.calculator-display:hover {
+  transform: translateY(-5px);
 }
 
 .total-label {
-  color: #333;
+  color: #666;
   font-size: 18px;
   margin-bottom: 15px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-weight: 500;
+  font-weight: 1000;
 }
 
 .total-amount {
   font-size: 48px;
   font-weight: 700;
   color: #ff4d4d;
-  text-shadow: 1px 1px 2px rgba(255,77,77,0.2);
+  text-shadow: 0 2px 4px rgba(255, 77, 77, 0.2);
   margin: 5px 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   animation: numberPulse 2s infinite;
   display: inline-block;
-  padding: 10px 20px;
-  background: rgba(255,77,77,0.05);
-  border-radius: 8px;
+  padding: 15px 30px;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
 }
 
 @keyframes numberPulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+  50% { transform: scale(1.1); text-shadow: 0 4px 8px rgba(255, 77, 77, 0.3); }
   100% { transform: scale(1); }
 }
 
 /* 物品卡片样式 */
 .item-card {
   position: relative;
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
+  border: none;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 16px;
   background: white;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 .item-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transform: translateY(-2px);
-  border-color: #007bff;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
 }
 
 .item-name {
   font-size: 28px;
   font-weight: 600;
-  color: #333;
+  color: #2c3e50;
   margin-bottom: 12px;
+  transition: color 0.3s ease;
 }
 
 .item-card:hover .item-name {
@@ -101,10 +109,14 @@ h1 {
 }
 
 .daily-cost {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
   color: #ff4d4d;
   margin-bottom: 15px;
+  padding: 8px 16px;
+  background: rgba(255, 77, 77, 0.1);
+  border-radius: 8px;
+  display: inline-block;
 }
 
 .item-card:hover .daily-cost {
@@ -115,6 +127,10 @@ h1 {
   color: #666;
   font-size: 14px;
   line-height: 1.6;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
 .item-details > div {
@@ -130,40 +146,42 @@ h1 {
 /* 按钮样式 */
 .add-button-new {
   display: inline-block;
-  background: #28a745;
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
   color: white;
   text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
   margin-bottom: 20px;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+  font-weight: 500;
 }
 
 .add-button-new:hover {
-  background: #218838;
-  color: white;
-  text-decoration: none;
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
 }
 
 .edit-button {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: #007bff;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   color: white;
   text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 8px 16px;
+  border-radius: 8px;
   font-size: 14px;
-  transition: all 0.2s ease;
-  opacity: 0.8;
+  transition: all 0.3s ease;
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
 }
 
 .edit-button:hover {
-  background: #0056b3;
-  color: white;
-  text-decoration: none;
-  transform: scale(1.05);
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 .item-card:hover .edit-button {
@@ -355,21 +373,24 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* 删除按钮 */
 .delete-button {
-  background: #dc3545;
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
 }
 
 .delete-button:hover {
-  background: #c82333;
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
 }
 
 .delete-button svg {
@@ -383,20 +404,23 @@ input[type="number"]::-webkit-outer-spin-button {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
 }
 
 .modal-content {
   background: white;
-  padding: 30px;
-  border-radius: 12px;
+  padding: 35px;
+  border-radius: 20px;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
 }
 
 .modal-content h2 {
@@ -443,4 +467,14 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .modal-button.confirm:hover {
   background: #c82333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
