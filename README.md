@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+# Cost Per Day Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple yet powerful web application to track your daily costs for purchased items. This app helps you understand how much you're spending per day on your purchases by calculating the daily cost from the purchase date until now.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Daily Cost Calculation**: Automatically calculates the cost per day for each item
+- **Total Daily Spending**: Shows the sum of all daily costs at a glance
+- **Item Management**: 
+  - Add new items with name, price, and purchase date
+  - Edit existing items
+  - Delete items with confirmation
+- **Modern UI/UX**:
+  - Responsive design
+  - Smooth animations
+  - Intuitive interface
+  - Date picker with month/year selection
+- **Persistent Storage**: Uses IndexedDB for local data storage
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js (v14 or higher)
+- npm (comes with Node.js)
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
+```bash
+git clone git@github.com:leoli-dev/cost-per-day.git
+cd cost-per-day
+```
 
-### `npm run build`
+2. Install dependencies:
+```bash
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Start the development server:
+```bash
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The app will open in your default browser at `http://localhost:3000`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Building for Production
 
-### `npm run eject`
+To create a production build:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run build
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The build files will be created in the `build` folder.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## How to Use
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Adding Items**
+   - Click the "添加新物品" (Add New Item) button
+   - Enter the item name
+   - Input the purchase price
+   - Select the purchase date
+   - Click "保存" (Save)
 
-## Learn More
+2. **Editing Items**
+   - Click the "修改" (Edit) button on any item
+   - Modify the details as needed
+   - Click "保存" (Save) to update
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. **Deleting Items**
+   - Go to the edit page of an item
+   - Click the "删除物品" (Delete Item) button
+   - Confirm the deletion in the popup dialog
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. **Viewing Costs**
+   - The total daily cost is displayed at the top
+   - Each item shows its individual daily cost
+   - All costs are automatically updated based on the current date
 
-### Code Splitting
+## Technologies Used
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- React
+- React Router
+- IndexedDB
+- CSS3 with modern features
+- date-fns for date handling
