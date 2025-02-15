@@ -1,19 +1,28 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { getAllItems } from '../services/db';
 
 function ItemList() {
   const [items, setItems] = useState([]);
   const [totalDailyCost, setTotalDailyCost] = useState(0);
 
   useEffect(() => {
-    const storedItems = JSON.parse(localStorage.getItem('items') || '[]');
-    setItems(storedItems);
-    
-    // Calculate total daily cost
-    const total = storedItems.reduce((sum, item) => {
-      return sum + Number(calculateDailyCost(item.price, item.purchaseDate));
-    }, 0);
-    setTotalDailyCost(total);
+    const loadItems = async () => {
+      try {
+        const storedItems = await getAllItems();
+        setItems(storedItems);
+        
+        // Calculate total daily cost
+        const total = storedItems.reduce((sum, item) => {
+          return sum + Number(calculateDailyCost(item.price, item.purchaseDate));
+        }, 0);
+        setTotalDailyCost(total);
+      } catch (error) {
+        console.error('Error loading items:', error);
+      }
+    };
+
+    loadItems();
   }, []);
 
   const calculateDailyCost = (price, purchaseDate) => {
@@ -38,11 +47,11 @@ function ItemList() {
         <div className="items-list">
           {items.map((item, index) => (
             <div key={index} className="item-card">
+              <div className="item-name">{item.name}</div>
               <div className="daily-cost">
                 ${calculateDailyCost(item.price, item.purchaseDate)}/天
               </div>
               <div className="item-details">
-                <div className="item-name">{item.name}</div>
                 <div>购买金额: ${item.price}</div>
                 <div>购买日期: {new Date(item.purchaseDate).toLocaleDateString()}</div>
               </div>

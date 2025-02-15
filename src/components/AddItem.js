@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { IoArrowBack } from "react-icons/io5";
 import zhCN from 'date-fns/locale/zh-CN';
+import { addItem, updateItem, getAllItems } from '../services/db';
 
 function AddItem() {
   const [name, setName] = useState('');
@@ -16,45 +17,49 @@ function AddItem() {
   const [editIndex, setEditIndex] = useState(-1);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const editParam = searchParams.get('edit');
-    
-    if (editParam !== null) {
-      const index = parseInt(editParam);
-      const items = JSON.parse(localStorage.getItem('items') || '[]');
-      if (items[index]) {
-        setIsEditMode(true);
-        setEditIndex(index);
-        setName(items[index].name);
-        setPrice(items[index].price.toString());
-        setPurchaseDate(new Date(items[index].purchaseDate));
+    const loadItem = async () => {
+      const searchParams = new URLSearchParams(location.search);
+      const editParam = searchParams.get('edit');
+      
+      if (editParam !== null) {
+        const items = await getAllItems();
+        const item = items.find(item => item.id === parseInt(editParam));
+        if (item) {
+          setIsEditMode(true);
+          setEditIndex(item.id);
+          setName(item.name);
+          setPrice(item.price.toString());
+          setPurchaseDate(new Date(item.purchaseDate));
+        }
       }
-    }
+    };
+
+    loadItem();
   }, [location]);
 
   const isFormValid = name.trim() !== '' && 
                      Number(price) > 0 && 
                      purchaseDate instanceof Date;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const newItem = {
+    const itemData = {
       name: name.trim(),
       price: Number(price),
       purchaseDate: purchaseDate.toISOString(),
     };
 
-    const existingItems = JSON.parse(localStorage.getItem('items') || '[]');
-    
-    if (isEditMode) {
-      existingItems[editIndex] = newItem;
-    } else {
-      existingItems.push(newItem);
+    try {
+      if (isEditMode) {
+        await updateItem(editIndex, itemData);
+      } else {
+        await addItem(itemData);
+      }
+      navigate('/');
+    } catch (error) {
+      console.error('Error saving item:', error);
     }
-    
-    localStorage.setItem('items', JSON.stringify(existingItems));
-    navigate('/');
   };
 
   return (

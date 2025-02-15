@@ -41,20 +41,53 @@ header {
 .item-card {
   position: relative;
   border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
   border-radius: 8px;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.item-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  border-color: #007bff;
+}
+
+.item-card:hover .item-name {
+  color: #007bff;
+}
+
+.item-card:hover .daily-cost {
+  color: #ff3333;
+}
+
+.item-card:hover .edit-button {
+  opacity: 1;
+}
+
+.item-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
 }
 
 .daily-cost {
   font-size: 20px;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 10px;
+  font-weight: 500;
+  color: #ff4d4d;
+  margin-bottom: 15px;
 }
 
 .item-details {
   color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.item-details > div {
+  margin-bottom: 4px;
 }
 
 .add-form {
@@ -323,19 +356,21 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .edit-button {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 20px;
+  right: 20px;
   background: #007bff;
   color: white;
   text-decoration: none;
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 14px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  opacity: 0.8;
 }
 
 .edit-button:hover {
   background: #0056b3;
   color: white;
   text-decoration: none;
+  transform: scale(1.05);
 }
