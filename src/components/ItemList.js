@@ -56,7 +56,7 @@ function ItemList() {
                 <div>购买日期: {new Date(item.purchaseDate).toLocaleDateString()}</div>
               </div>
               <Link 
-                to={`/add?edit=${item.id}`}
+                to={`/edit?id=${item.id}`}
                 className="edit-button"
               >
                 修改

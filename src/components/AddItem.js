@@ -20,23 +20,32 @@ function AddItem() {
   useEffect(() => {
     const loadItem = async () => {
       const searchParams = new URLSearchParams(location.search);
-      const editParam = searchParams.get('edit');
+      const editId = searchParams.get('id');
       
-      if (editParam !== null) {
-        const items = await getAllItems();
-        const item = items.find(item => item.id === parseInt(editParam));
-        if (item) {
-          setIsEditMode(true);
-          setEditIndex(item.id);
-          setName(item.name);
-          setPrice(item.price.toString());
-          setPurchaseDate(new Date(item.purchaseDate));
+      const isEdit = location.pathname === '/edit';
+      
+      if (isEdit && editId) {
+        try {
+          const items = await getAllItems();
+          const item = items.find(item => item.id === parseInt(editId));
+          if (item) {
+            setIsEditMode(true);
+            setEditIndex(item.id);
+            setName(item.name);
+            setPrice(item.price.toString());
+            setPurchaseDate(new Date(item.purchaseDate));
+          } else {
+            navigate('/');
+          }
+        } catch (error) {
+          console.error('Error loading item:', error);
+          navigate('/');
         }
       }
     };
 
     loadItem();
-  }, [location]);
+  }, [location, navigate]);
 
   const isFormValid = name.trim() !== '' && 
                      Number(price) > 0 && 
