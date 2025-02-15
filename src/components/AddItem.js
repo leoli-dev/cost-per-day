@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { IoArrowBack } from "react-icons/io5";
+import { IoArrowBack, IoTrashOutline } from "react-icons/io5";
 import zhCN from 'date-fns/locale/zh-CN';
-import { addItem, updateItem, getAllItems } from '../services/db';
+import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 
 function AddItem() {
   const [name, setName] = useState('');
@@ -15,6 +15,7 @@ function AddItem() {
   const location = useLocation();
   const [isEditMode, setIsEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     const loadItem = async () => {
@@ -62,6 +63,15 @@ function AddItem() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await deleteItem(editIndex);
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
   return (
     <div className="container">
       <Link to="/" className="back-button">
@@ -70,6 +80,18 @@ function AddItem() {
       </Link>
       
       <h1>{isEditMode ? '编辑物品' : '添加新物品'}</h1>
+
+      {isEditMode && (
+        <button 
+          type="button"
+          className="delete-button"
+          onClick={() => setShowDeleteConfirm(true)}
+        >
+          <IoTrashOutline />
+          删除物品
+        </button>
+      )}
+
       <form onSubmit={handleSubmit} className="add-form">
         <div className="form-group">
           <label>物品名称:</label>
@@ -165,6 +187,29 @@ function AddItem() {
           保存
         </button>
       </form>
+
+      {showDeleteConfirm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>确认删除</h2>
+            <p>确定要删除这个物品吗？此操作不可撤销。</p>
+            <div className="modal-buttons">
+              <button 
+                className="modal-button cancel"
+                onClick={() => setShowDeleteConfirm(false)}
+              >
+                取消
+              </button>
+              <button 
+                className="modal-button confirm"
+                onClick={handleDelete}
+              >
+                确认删除
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
