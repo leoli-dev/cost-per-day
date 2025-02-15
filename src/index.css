@@ -1,3 +1,4 @@
+/* 基础样式 */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,12 +13,14 @@ code {
     monospace;
 }
 
+/* 布局容器 */
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
 
+/* 头部样式 */
 header {
   display: flex;
   justify-content: space-between;
@@ -25,104 +28,11 @@ header {
   margin-bottom: 20px;
 }
 
-.add-button {
-  font-size: 24px;
-  text-decoration: none;
-  background: #007bff;
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+h1 {
+  margin-bottom: 20px;
 }
 
-.item-card {
-  position: relative;
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  background: white;
-  transition: all 0.2s ease;
-}
-
-.item-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transform: translateY(-2px);
-  border-color: #007bff;
-}
-
-.item-card:hover .item-name {
-  color: #007bff;
-}
-
-.item-card:hover .daily-cost {
-  color: #ff3333;
-}
-
-.item-card:hover .edit-button {
-  opacity: 1;
-}
-
-.item-name {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-}
-
-.daily-cost {
-  font-size: 20px;
-  font-weight: 500;
-  color: #ff4d4d;
-  margin-bottom: 15px;
-}
-
-.item-details {
-  color: #666;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.item-details > div {
-  margin-bottom: 4px;
-}
-
-.add-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-input {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-button {
-  padding: 10px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.no-items {
-  text-align: center;
-  color: #666;
-  margin-top: 40px;
-}
-
+/* 计算器显示区域 */
 .calculator-display {
   background: #f8f9fa;
   border: 1px solid #333;
@@ -162,6 +72,62 @@ button {
   100% { transform: scale(1); }
 }
 
+/* 物品卡片样式 */
+.item-card {
+  position: relative;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.item-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  border-color: #007bff;
+}
+
+.item-name {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.item-card:hover .item-name {
+  color: #007bff;
+}
+
+.daily-cost {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ff4d4d;
+  margin-bottom: 15px;
+}
+
+.item-card:hover .daily-cost {
+  color: #ff3333;
+}
+
+.item-details {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.item-details > div {
+  margin-bottom: 4px;
+}
+
+.no-items {
+  text-align: center;
+  color: #666;
+  margin-top: 40px;
+}
+
+/* 按钮样式 */
 .add-button-new {
   display: inline-block;
   background: #28a745;
@@ -177,6 +143,31 @@ button {
   background: #218838;
   color: white;
   text-decoration: none;
+}
+
+.edit-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+}
+
+.edit-button:hover {
+  background: #0056b3;
+  color: white;
+  text-decoration: none;
+  transform: scale(1.05);
+}
+
+.item-card:hover .edit-button {
+  opacity: 1;
 }
 
 .back-button {
@@ -205,6 +196,30 @@ button {
   font-size: 20px;
 }
 
+/* 表单样式 */
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
 .save-button {
   background: #28a745;
   color: white;
@@ -225,6 +240,7 @@ button {
   cursor: not-allowed;
 }
 
+/* DatePicker 样式 */
 .date-picker {
   width: 100%;
   padding: 8px;
@@ -232,7 +248,6 @@ button {
   border-radius: 4px;
 }
 
-/* Override default datepicker styles */
 .react-datepicker-wrapper {
   width: 100%;
 }
@@ -241,22 +256,6 @@ button {
   width: 100%;
 }
 
-h1 {
-  margin-bottom: 20px;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  opacity: 1;
-}
-
-.item-name {
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-/* DatePicker Customization */
 .custom-datepicker {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   border: 1px solid #ddd !important;
@@ -352,25 +351,4 @@ input[type="number"]::-webkit-outer-spin-button {
 .react-datepicker__month-text--selected, 
 .react-datepicker__year-text--selected {
   background-color: #28a745 !important;
-}
-
-.edit-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #007bff;
-  color: white;
-  text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  opacity: 0.8;
-}
-
-.edit-button:hover {
-  background: #0056b3;
-  color: white;
-  text-decoration: none;
-  transform: scale(1.05);
 }
