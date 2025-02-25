@@ -8,6 +8,7 @@ function ItemList() {
   const [items, setItems] = useState([]);
   const [totalDailyCost, setTotalDailyCost] = useState(0);
   const [expandedItem, setExpandedItem] = useState(null);
+  const [activeIcon, setActiveIcon] = useState(null);
 
   useEffect(() => {
     const loadItems = async () => {
@@ -45,6 +46,13 @@ function ItemList() {
     setExpandedItem(expandedItem === id ? null : id);
   };
 
+  const handleIconClick = (iconName) => {
+    setActiveIcon(iconName);
+    setTimeout(() => {
+      setActiveIcon(null);
+    }, 1000);
+  };
+
   return (
     <div className="pb-20">
       {/* Header Total - 使用渐变背景 */}
@@ -74,7 +82,7 @@ function ItemList() {
                   className="flex items-center justify-between p-4 cursor-pointer hover:bg-purple-50 transition-colors"
                   onClick={() => toggleItem(item.id)}
                 >
-                  <div className="font-medium text-gray-800">{item.name}</div>
+                  <div className="font-medium text-gray-800 text-2xl">{item.name}</div>
                   <div className="flex items-center gap-2">
                     <span className="font-orbitron text-purple-600 bg-purple-100 px-3 py-1 rounded-full">
                       ${formatCurrency(calculateDailyCost(item.price, item.purchaseDate))}
@@ -114,23 +122,43 @@ function ItemList() {
         )}
       </div>
 
-      {/* Fixed Footer - 添加毛玻璃效果 */}
+      {/* Fixed Footer */}
       <div className="fixed bottom-0 left-0 right-0 backdrop-blur-md bg-white/90 border-t border-purple-100">
         <div className="max-w-lg mx-auto px-4 py-2 flex justify-around items-center">
           <Link 
             to="/"
-            className="p-4 text-purple-600 hover:text-purple-800"
+            className="relative p-4 group"
+            onClick={() => handleIconClick('home')}
           >
-            <IoHomeOutline className="text-2xl" />
+            <div className={`absolute inset-0 rounded-full transition-all duration-300 
+              ${activeIcon === 'home' ? 'bg-purple-600 scale-110' : 'bg-transparent scale-0'}`} 
+            />
+            <IoHomeOutline className={`text-2xl relative z-10 transition-colors duration-300
+              ${activeIcon === 'home' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
+            />
           </Link>
           <Link 
             to="/add"
-            className="p-4 text-purple-600 hover:text-purple-800"
+            className="relative p-4 group"
+            onClick={() => handleIconClick('add')}
           >
-            <IoAddOutline className="text-3xl" />
+            <div className={`absolute inset-0 rounded-full transition-all duration-300 
+              ${activeIcon === 'add' ? 'bg-purple-600 scale-110' : 'bg-transparent scale-0'}`} 
+            />
+            <IoAddOutline className={`text-3xl relative z-10 transition-colors duration-300
+              ${activeIcon === 'add' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
+            />
           </Link>
-          <button className="p-4 text-purple-600 hover:text-purple-800">
-            <IoSettingsOutline className="text-2xl" />
+          <button 
+            className="relative p-4 group"
+            onClick={() => handleIconClick('settings')}
+          >
+            <div className={`absolute inset-0 rounded-full transition-all duration-300 
+              ${activeIcon === 'settings' ? 'bg-purple-600 scale-110' : 'bg-transparent scale-0'}`} 
+            />
+            <IoSettingsOutline className={`text-2xl relative z-10 transition-colors duration-300
+              ${activeIcon === 'settings' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
+            />
           </button>
         </div>
       </div>

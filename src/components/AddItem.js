@@ -16,6 +16,7 @@ function AddItem() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [activeIcon, setActiveIcon] = useState(null);
 
   useEffect(() => {
     const loadItem = async () => {
@@ -79,6 +80,13 @@ function AddItem() {
     } catch (error) {
       console.error('Error deleting item:', error);
     }
+  };
+
+  const handleIconClick = (iconName) => {
+    setActiveIcon(iconName);
+    setTimeout(() => {
+      setActiveIcon(null);
+    }, 1000);
   };
 
   return (
@@ -171,18 +179,38 @@ function AddItem() {
         <div className="max-w-lg mx-auto px-4 py-2 flex justify-around items-center">
           <Link 
             to="/"
-            className="p-4 text-purple-600 hover:text-purple-800"
+            className="relative p-4 group"
+            onClick={() => handleIconClick('home')}
           >
-            <IoHomeOutline className="text-2xl" />
+            <div className={`absolute inset-0 rounded-full transition-all duration-300 
+              ${activeIcon === 'home' ? 'bg-purple-600 scale-110' : 'bg-transparent scale-0'}`} 
+            />
+            <IoHomeOutline className={`text-2xl relative z-10 transition-colors duration-300
+              ${activeIcon === 'home' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
+            />
           </Link>
           <Link 
             to="/add"
-            className="p-4 text-purple-600 hover:text-purple-800"
+            className="relative p-4 group"
+            onClick={() => handleIconClick('add')}
           >
-            <IoAddOutline className="text-3xl" />
+            <div className={`absolute inset-0 rounded-full transition-all duration-300 
+              ${activeIcon === 'add' ? 'bg-purple-600 scale-110' : 'bg-transparent scale-0'}`} 
+            />
+            <IoAddOutline className={`text-3xl relative z-10 transition-colors duration-300
+              ${activeIcon === 'add' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
+            />
           </Link>
-          <button className="p-4 text-purple-600 hover:text-purple-800">
-            <IoSettingsOutline className="text-2xl" />
+          <button 
+            className="relative p-4 group"
+            onClick={() => handleIconClick('settings')}
+          >
+            <div className={`absolute inset-0 rounded-full transition-all duration-300 
+              ${activeIcon === 'settings' ? 'bg-purple-600 scale-110' : 'bg-transparent scale-0'}`} 
+            />
+            <IoSettingsOutline className={`text-2xl relative z-10 transition-colors duration-300
+              ${activeIcon === 'settings' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
+            />
           </button>
         </div>
       </div>
