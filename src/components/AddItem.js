@@ -82,39 +82,42 @@ function AddItem() {
   };
 
   return (
-    <div className="container">
-      <Link to="/" className="back-button">
-        <IoArrowBack />
+    <div className="max-w-lg mx-auto px-4 py-4 min-h-screen">
+      <Link to="/" className="inline-flex items-center text-gray-600 mb-6 hover:text-gray-800">
+        <IoArrowBack className="mr-2" />
         返回列表
       </Link>
       
-      <h1>{isEditMode ? '编辑物品' : '添加新物品'}</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+        {isEditMode ? '编辑物品' : '添加新物品'}
+      </h1>
 
       {isEditMode && (
         <button 
           type="button"
-          className="delete-button"
+          className="btn-danger w-full mb-6 py-3 flex items-center justify-center gap-2"
           onClick={() => setShowDeleteConfirm(true)}
         >
-          <IoTrashOutline />
+          <IoTrashOutline className="text-xl" />
           删除物品
         </button>
       )}
 
-      <form onSubmit={handleSubmit} className="add-form">
-        <div className="form-group">
-          <label>物品名称:</label>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label className="form-label block">物品名称:</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
             placeholder="请输入物品名称"
+            className="input-field py-3"
           />
         </div>
         
-        <div className="form-group">
-          <label>购买金额 ($):</label>
+        <div className="space-y-2">
+          <label className="form-label block">购买金额 ($):</label>
           <input
             type="number"
             value={price}
@@ -123,18 +126,19 @@ function AddItem() {
             step="0.01"
             required
             placeholder="请输入大于0的金额"
+            className="input-field py-3"
           />
         </div>
 
-        <div className="form-group">
-          <label>购买日期:</label>
+        <div className="space-y-2">
+          <label className="form-label block">购买日期:</label>
           <DatePicker
             selected={purchaseDate}
             onChange={date => setPurchaseDate(date)}
             maxDate={new Date()}
             dateFormat="yyyy/MM/dd"
             required
-            className="date-picker"
+            className="input-field py-3"
             locale={zhCN}
             showMonthYearPicker={datePickerOpen === 'month'}
             showYearPicker={datePickerOpen === 'year'}
@@ -190,7 +194,7 @@ function AddItem() {
 
         <button 
           type="submit" 
-          className="save-button" 
+          className="btn-primary w-full py-3 text-lg mt-8" 
           disabled={!isFormValid}
         >
           保存
@@ -198,19 +202,19 @@ function AddItem() {
       </form>
 
       {showDeleteConfirm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>确认删除</h2>
-            <p>确定要删除这个物品吗？此操作不可撤销。</p>
-            <div className="modal-buttons">
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center sm:items-center p-4 z-50">
+          <div className="bg-white w-full max-w-sm rounded-2xl p-6 space-y-4">
+            <h2 className="text-xl font-semibold text-gray-800">确认删除</h2>
+            <p className="text-gray-600">确定要删除这个物品吗？此操作不可撤销。</p>
+            <div className="flex gap-3 pt-2">
               <button 
-                className="modal-button cancel"
+                className="flex-1 py-3 px-4 rounded-lg bg-gray-100 text-gray-700 font-medium"
                 onClick={() => setShowDeleteConfirm(false)}
               >
                 取消
               </button>
               <button 
-                className="modal-button confirm"
+                className="flex-1 py-3 px-4 rounded-lg bg-danger-600 text-white font-medium"
                 onClick={handleDelete}
               >
                 确认删除
