@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getAllItems } from '../services/db';
+import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoChevronDown } from 'react-icons/io5';
 
 function ItemList() {
   const [items, setItems] = useState([]);
   const [totalDailyCost, setTotalDailyCost] = useState(0);
+  const [expandedItem, setExpandedItem] = useState(null);
 
   useEffect(() => {
     const loadItems = async () => {
@@ -38,64 +40,95 @@ function ItemList() {
     return Math.ceil((currentTime - purchaseTime) / (1000 * 60 * 60 * 24));
   };
 
+  const toggleItem = (id) => {
+    setExpandedItem(expandedItem === id ? null : id);
+  };
+
   return (
-    <div className="max-w-lg mx-auto px-4 py-4 min-h-screen">
-      <div className="bg-white rounded-xl p-6 mb-6 shadow-lg transform hover:-translate-y-1 transition-all duration-300">
-        <div className="text-gray-600 text-base font-semibold uppercase tracking-wide mb-2">
-          日均总花费
-        </div>
-        <div className="text-4xl font-bold text-danger-600 animate-pulse-subtle">
-          ${totalDailyCost.toFixed(2)}/天
+    <div className="pb-20"> {/* Add padding bottom for footer */}
+      {/* Header Total */}
+      <div className="bg-white border-b border-gray-200 px-4 py-6 mb-4">
+        <div className="text-center">
+          <div className="text-gray-600 text-sm font-medium mb-2">
+            日均总花费
+          </div>
+          <div className="font-mono text-4xl font-medium text-danger-600">
+            ${totalDailyCost.toFixed(2)}/天
+          </div>
         </div>
       </div>
-      
-      <Link 
-        to="/add" 
-        className="btn-primary inline-flex items-center mb-6 w-full justify-center text-lg py-3"
-      >
-        添加新物品
-      </Link>
-      
-      {items.length === 0 ? (
-        <p className="text-center text-gray-500 mt-8">暂无项目</p>
-      ) : (
-        <div className="space-y-4">
-          {items.map((item, index) => (
-            <div 
-              key={index} 
-              className="bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-all duration-300 
-              relative"
-            >
-              <div className="pr-16"> {/* Add padding-right to prevent text overlap with edit button */}
-                <div className="text-xl font-semibold text-gray-800 mb-2 line-clamp-1">
-                  {item.name}
-                </div>
-                <div className="inline-block px-3 py-1.5 bg-danger-50 text-danger-600 rounded-lg text-lg font-medium mb-3">
-                  ${calculateDailyCost(item.price, item.purchaseDate)}/天
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3 space-y-1.5 text-sm">
-                  <div className="text-gray-600">
-                    购买金额: ${item.price}
-                  </div>
-                  <div className="text-gray-600 flex items-center flex-wrap gap-1">
-                    购买日期: {new Date(item.purchaseDate).toLocaleDateString()}
-                    <span className="text-gray-500">
-                      ({calculateDaysSince(item.purchaseDate)}天)
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <Link 
-                to={`/edit?id=${item.id}`}
-                className="absolute top-4 right-4 px-3 py-1.5 bg-blue-500 text-white rounded-md
-                hover:bg-blue-600 transition-colors duration-200 text-sm"
+
+      {/* Items List */}
+      <div className="px-4">
+        {items.length === 0 ? (
+          <p className="text-center text-gray-500 mt-8">暂无项目</p>
+        ) : (
+          <div className="space-y-3">
+            {items.map((item) => (
+              <div 
+                key={item.id}
+                className="bg-white rounded-lg shadow-sm overflow-hidden"
               >
-                修改
-              </Link>
-            </div>
-          ))}
+                <div 
+                  className="flex items-center justify-between p-4 cursor-pointer"
+                  onClick={() => toggleItem(item.id)}
+                >
+                  <div className="font-medium text-gray-800">{item.name}</div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-danger-600">
+                      ${calculateDailyCost(item.price, item.purchaseDate)}/天
+                    </span>
+                    <IoChevronDown 
+                      className={`transition-transform ${
+                        expandedItem === item.id ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                {expandedItem === item.id && (
+                  <div className="px-4 pb-4 border-t border-gray-100">
+                    <div className="pt-4 space-y-2 text-sm text-gray-600">
+                      <div>购买金额: ${item.price}</div>
+                      <div className="flex items-center gap-1">
+                        购买日期: {new Date(item.purchaseDate).toLocaleDateString()}
+                        <span className="text-gray-500">
+                          ({calculateDaysSince(item.purchaseDate)}天)
+                        </span>
+                      </div>
+                    </div>
+                    <Link 
+                      to={`/edit?id=${item.id}`}
+                      className="mt-4 block w-full text-center py-2 bg-blue-500 text-white rounded-md
+                      hover:bg-blue-600 transition-colors duration-200"
+                    >
+                      修改
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Fixed Footer */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+        <div className="max-w-lg mx-auto px-4 py-2 flex justify-around items-center">
+          <button className="p-4 text-gray-600 hover:text-gray-900">
+            <IoHomeOutline className="text-2xl" />
+          </button>
+          <Link 
+            to="/add"
+            className="p-4 text-primary-600 hover:text-primary-700"
+          >
+            <IoAddOutline className="text-3xl" />
+          </Link>
+          <button className="p-4 text-gray-600 hover:text-gray-900">
+            <IoSettingsOutline className="text-2xl" />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
