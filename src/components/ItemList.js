@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getAllItems } from '../services/db';
 import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoChevronDown } from 'react-icons/io5';
-import { formatCurrency } from '../utils/formatters';
+import { formatCurrency, formatDate } from '../utils/formatters';
 
 function ItemList() {
   const [items, setItems] = useState([]);
@@ -100,7 +100,7 @@ function ItemList() {
                     <div className="pt-4 space-y-2 text-sm text-gray-600">
                       <div>购买金额: <span className="font-orbitron text-purple-600">${formatCurrency(item.price)}</span></div>
                       <div className="flex items-center gap-1">
-                        购买日期: {new Date(item.purchaseDate).toLocaleDateString()}
+                        购买日期: {formatDate(item.purchaseDate)}
                         <span className="text-purple-500 font-medium">
                           ({calculateDaysSince(item.purchaseDate)}天)
                         </span>

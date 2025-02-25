@@ -21,37 +21,37 @@ function Footer() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 backdrop-blur-md bg-white/90 border-t border-purple-100">
-      <div className="max-w-lg mx-auto px-4 py-2 flex justify-around items-center">
+      <div className="max-w-lg mx-auto px-4 py-3 flex justify-around items-center">
         <button 
-          className="relative p-4 group"
+          className="relative p-5 group"
           onClick={() => handleIconClick('home', '/')}
         >
-          <div className={`absolute inset-[6px] rounded-full transition-all duration-300 
+          <div className={`absolute inset-[8px] rounded-full transition-all duration-300 
             ${activeIcon === 'home' ? 'bg-purple-600 scale-100' : 'bg-transparent scale-50 opacity-0'}`} 
           />
-          <IoHomeOutline className={`text-2xl relative z-10 transition-colors duration-300
+          <IoHomeOutline className={`text-3xl relative z-10 transition-colors duration-300
             ${activeIcon === 'home' ? 'text-white' : location.pathname === '/' ? 'text-purple-800' : 'text-purple-600 group-hover:text-purple-800'}`} 
           />
         </button>
         <button 
-          className="relative p-4 group"
+          className="relative p-5 group"
           onClick={() => handleIconClick('add', '/add')}
         >
-          <div className={`absolute inset-[6px] rounded-full transition-all duration-300 
+          <div className={`absolute inset-[8px] rounded-full transition-all duration-300 
             ${activeIcon === 'add' ? 'bg-purple-600 scale-100' : 'bg-transparent scale-50 opacity-0'}`} 
           />
-          <IoAddOutline className={`text-3xl relative z-10 transition-colors duration-300
+          <IoAddOutline className={`text-4xl relative z-10 transition-colors duration-300
             ${activeIcon === 'add' ? 'text-white' : location.pathname === '/add' ? 'text-purple-800' : 'text-purple-600 group-hover:text-purple-800'}`} 
           />
         </button>
         <button 
-          className="relative p-4 group"
+          className="relative p-5 group"
           onClick={() => handleIconClick('settings')}
         >
-          <div className={`absolute inset-[6px] rounded-full transition-all duration-300 
+          <div className={`absolute inset-[8px] rounded-full transition-all duration-300 
             ${activeIcon === 'settings' ? 'bg-purple-600 scale-100' : 'bg-transparent scale-50 opacity-0'}`} 
           />
-          <IoSettingsOutline className={`text-2xl relative z-10 transition-colors duration-300
+          <IoSettingsOutline className={`text-3xl relative z-10 transition-colors duration-300
             ${activeIcon === 'settings' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
           />
         </button>

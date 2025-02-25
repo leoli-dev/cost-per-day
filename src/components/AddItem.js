@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoTrashOutline } from "react-icons/io5";
 import zhCN from 'date-fns/locale/zh-CN';
 import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
+import { formatDate } from '../utils/formatters';
 
 function AddItem() {
   const [name, setName] = useState('');
