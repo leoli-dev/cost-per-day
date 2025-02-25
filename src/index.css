@@ -532,3 +532,27 @@ input[type="number"]::-webkit-outer-spin-button {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #9333ea;
+  --rdp-background-color: #f3e8ff;
+  margin: 0;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: #f3e8ff;
+}
+
+.rdp-day_selected {
+  background-color: var(--rdp-accent-color);
+}
+
+.rdp-day_selected:hover {
+  background-color: #7e22ce;
+}
+
+.rdp-head_cell {
+  font-weight: 600;
+  color: #6b7280;
+}

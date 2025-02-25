@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoTrashOutline } from "react-icons/io5";
-import zhCN from 'date-fns/locale/zh-CN';
+import { zhCN } from 'date-fns/locale';
 import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 import { formatDate } from '../utils/formatters';
 
@@ -11,7 +11,7 @@ function AddItem() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [purchaseDate, setPurchaseDate] = useState(new Date());
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -65,6 +65,18 @@ function AddItem() {
 
     loadItem();
   }, [location.pathname, location.search, navigate]);
+
+  // Add click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showDatePicker && !event.target.closest('.date-picker-container')) {
+        setShowDatePicker(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showDatePicker]);
 
   const isFormValid = name.trim() !== '' && 
                      Number(price) > 0 && 
@@ -148,21 +160,52 @@ function AddItem() {
 
           <div className="space-y-2">
             <label className="text-sm text-gray-600 font-medium">购买日期</label>
-            <DatePicker
-              selected={purchaseDate}
-              onChange={date => setPurchaseDate(date)}
-              maxDate={new Date()}
-              dateFormat="yyyy/MM/dd"
-              required
-              className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
-              focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
-              locale={zhCN}
-              showMonthYearPicker={datePickerOpen === 'month'}
-              showYearPicker={datePickerOpen === 'year'}
-              onCalendarOpen={() => setDatePickerOpen('date')}
-              onCalendarClose={() => setDatePickerOpen(false)}
-              calendarClassName="bg-white rounded-xl shadow-lg border border-purple-100 overflow-hidden"
-            />
+            <div className="relative date-picker-container">
+              <input
+                type="text"
+                value={formatDate(purchaseDate)}
+                onClick={() => setShowDatePicker(true)}
+                readOnly
+                className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
+                focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200 cursor-pointer"
+              />
+              
+              {showDatePicker && (
+                <div 
+                  className="fixed inset-0 z-50" 
+                  style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
+                  onClick={(e) => {
+                    if (e.target === e.currentTarget) {
+                      setShowDatePicker(false);
+                    }
+                  }}
+                >
+                  <div 
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
+                    bg-white rounded-xl shadow-lg border border-purple-100 overflow-hidden"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <DayPicker
+                      mode="single"
+                      selected={purchaseDate}
+                      onSelect={(date) => {
+                        if (date) {
+                          setPurchaseDate(date);
+                          setShowDatePicker(false);
+                        }
+                      }}
+                      locale={zhCN}
+                      maxDate={new Date()}
+                      modifiersClassNames={{
+                        selected: 'bg-purple-600 text-white hover:bg-purple-700',
+                        today: 'text-purple-600 font-bold',
+                      }}
+                      className="p-3"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-4 pt-4">
