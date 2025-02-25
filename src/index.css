@@ -1,3 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg transition-all duration-200 font-medium;
+  }
+  
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-primary-600 to-primary-700 text-white 
+    hover:from-primary-700 hover:to-primary-800 shadow-md hover:shadow-lg
+    hover:-translate-y-0.5;
+  }
+
+  .btn-danger {
+    @apply btn bg-gradient-to-r from-danger-500 to-danger-600 text-white 
+    hover:from-danger-600 hover:to-danger-700 shadow-md hover:shadow-lg
+    hover:-translate-y-0.5;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary-500 
+    focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200;
+  }
+
+  .form-label {
+    @apply text-gray-700 font-medium mb-1;
+  }
+}
+
 /* 基础样式 */
 body {
   margin: 0;
@@ -135,6 +172,10 @@ h1 {
 
 .item-details > div {
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .no-items {
@@ -477,4 +518,10 @@ input[type="number"]::-webkit-outer-spin-button {
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+.days-since {
+  color: #666;
+  margin-left: 4px;
+  font-size: 14px;
 }
