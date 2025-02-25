@@ -12,13 +12,30 @@ function AddItem() {
   const [price, setPrice] = useState('');
   const [purchaseDate, setPurchaseDate] = useState(new Date());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isEditMode, setIsEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activeIcon, setActiveIcon] = useState(null);
 
+  // Reset form when pathname changes
+  useEffect(() => {
+    const resetForm = () => {
+      setName('');
+      setPrice('');
+      setPurchaseDate(new Date());
+      setIsEditMode(false);
+      setEditIndex(-1);
+      setShowDeleteConfirm(false);
+    };
+
+    if (location.pathname === '/add') {
+      resetForm();
+    }
+  }, [location.pathname]);
+
+  // Load item data for edit mode
   useEffect(() => {
     const loadItem = async () => {
       const searchParams = new URLSearchParams(location.search);
@@ -47,7 +64,7 @@ function AddItem() {
     };
 
     loadItem();
-  }, [location, navigate]);
+  }, [location.pathname, location.search, navigate]);
 
   const isFormValid = name.trim() !== '' && 
                      Number(price) > 0 && 
