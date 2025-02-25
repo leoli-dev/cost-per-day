@@ -5,7 +5,7 @@ import AddItem from './components/AddItem';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 min-h-screen bg-gray-50">
         <Routes>
           <Route path="/" element={<ItemList />} />
           <Route path="/add" element={<AddItem />} />

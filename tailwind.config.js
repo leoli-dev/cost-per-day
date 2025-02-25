@@ -52,6 +52,7 @@ module.exports = {
       },
       fontFamily: {
         mono: ['Roboto Mono', 'monospace'],
+        orbitron: ['Orbitron', 'sans-serif'],
       },
     },
   },

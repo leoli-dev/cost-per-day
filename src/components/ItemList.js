@@ -52,7 +52,7 @@ function ItemList() {
           <div className="text-gray-600 text-sm font-medium mb-2">
             日均总花费
           </div>
-          <div className="font-mono text-4xl font-medium text-danger-600">
+          <div className="font-orbitron text-4xl font-medium text-danger-600">
             ${totalDailyCost.toFixed(2)}/天
           </div>
         </div>
@@ -75,7 +75,7 @@ function ItemList() {
                 >
                   <div className="font-medium text-gray-800">{item.name}</div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-danger-600">
+                    <span className="font-orbitron text-danger-600">
                       ${calculateDailyCost(item.price, item.purchaseDate)}/天
                     </span>
                     <IoChevronDown 
@@ -89,7 +89,7 @@ function ItemList() {
                 {expandedItem === item.id && (
                   <div className="px-4 pb-4 border-t border-gray-100">
                     <div className="pt-4 space-y-2 text-sm text-gray-600">
-                      <div>购买金额: ${item.price}</div>
+                      <div>购买金额: <span className="font-orbitron">${item.price}</span></div>
                       <div className="flex items-center gap-1">
                         购买日期: {new Date(item.purchaseDate).toLocaleDateString()}
                         <span className="text-gray-500">
