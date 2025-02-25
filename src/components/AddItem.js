@@ -82,14 +82,15 @@ function AddItem() {
   };
 
   return (
-    <div className="pb-20 min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <h1 className="text-2xl font-semibold text-gray-800 text-center">
+    <div className="pb-20 min-h-screen">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-6">
+        <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg">
           {isEditMode ? '编辑物品' : '添加新物品'}
         </h1>
       </div>
 
-      <div className="px-4 py-6">
+      <div className="px-4">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm text-gray-600 font-medium">物品名称</label>
@@ -99,8 +100,8 @@ function AddItem() {
               onChange={(e) => setName(e.target.value)}
               required
               placeholder="请输入物品名称"
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary-500 
-              focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200"
+              className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
+              focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
             />
           </div>
           
@@ -114,8 +115,8 @@ function AddItem() {
               step="0.01"
               required
               placeholder="请输入大于0的金额"
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary-500 
-              focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200"
+              className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
+              focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200 font-orbitron"
             />
           </div>
 
@@ -127,100 +128,60 @@ function AddItem() {
               maxDate={new Date()}
               dateFormat="yyyy/MM/dd"
               required
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary-500 
-              focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-200"
+              className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
+              focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
               locale={zhCN}
               showMonthYearPicker={datePickerOpen === 'month'}
               showYearPicker={datePickerOpen === 'year'}
               onCalendarOpen={() => setDatePickerOpen('date')}
               onCalendarClose={() => setDatePickerOpen(false)}
-              calendarClassName="custom-datepicker"
-              renderCustomHeader={({
-                date,
-                decreaseMonth,
-                increaseMonth,
-                decreaseYear,
-                increaseYear,
-                prevMonthButtonDisabled,
-                nextMonthButtonDisabled,
-                changeYear,
-                changeMonth,
-              }) => (
-                <div className="custom-header">
-                  <button
-                    type="button"
-                    className="view-switch"
-                    onClick={() => {
-                      if (!datePickerOpen) setDatePickerOpen('date');
-                      else if (datePickerOpen === 'date') setDatePickerOpen('month');
-                      else if (datePickerOpen === 'month') setDatePickerOpen('year');
-                      else setDatePickerOpen('date');
-                    }}
-                  >
-                    {datePickerOpen === 'year' ? date.getFullYear() :
-                     datePickerOpen === 'month' ? date.getFullYear() :
-                     `${date.getFullYear()}/${date.getMonth() + 1}`}
-                  </button>
-                  <div className="navigation-buttons">
-                    <button
-                      type="button"
-                      onClick={datePickerOpen === 'year' ? decreaseYear : decreaseMonth}
-                      disabled={prevMonthButtonDisabled}
-                    >
-                      ←
-                    </button>
-                    <button
-                      type="button"
-                      onClick={datePickerOpen === 'year' ? increaseYear : increaseMonth}
-                      disabled={nextMonthButtonDisabled}
-                    >
-                      →
-                    </button>
-                  </div>
-                </div>
-              )}
+              calendarClassName="bg-white rounded-xl shadow-lg border border-purple-100 overflow-hidden"
             />
           </div>
 
-          <button 
-            type="submit" 
-            className="w-full py-3 bg-primary-600 text-white rounded-lg font-medium
-            hover:bg-primary-700 transition-colors duration-200 disabled:bg-gray-300"
-            disabled={!isFormValid}
-          >
-            保存
-          </button>
-
-          {isEditMode && (
+          <div className="space-y-4 pt-4">
             <button 
-              type="button"
-              className="w-full py-3 bg-danger-600 text-white rounded-lg font-medium
-              hover:bg-danger-700 transition-colors duration-200 flex items-center justify-center gap-2"
-              onClick={() => setShowDeleteConfirm(true)}
+              type="submit" 
+              className="w-full py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-medium
+              hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg
+              disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
+              disabled={!isFormValid}
             >
-              <IoTrashOutline className="text-xl" />
-              删除物品
+              保存
             </button>
-          )}
+
+            {isEditMode && (
+              <button 
+                type="button"
+                className="w-full py-3.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium
+                hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-md hover:shadow-lg
+                flex items-center justify-center gap-2"
+                onClick={() => setShowDeleteConfirm(true)}
+              >
+                <IoTrashOutline className="text-xl" />
+                删除物品
+              </button>
+            )}
+          </div>
         </form>
       </div>
 
       {/* Fixed Footer */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      <div className="fixed bottom-0 left-0 right-0 backdrop-blur-md bg-white/90 border-t border-purple-100">
         <div className="max-w-lg mx-auto px-4 py-2 flex justify-around items-center">
           <Link 
             to="/"
-            className="p-4 text-gray-600 hover:text-gray-900"
+            className="p-4 text-purple-600 hover:text-purple-800"
           >
             <IoHomeOutline className="text-2xl" />
           </Link>
           <Link 
             to="/add"
-            className="p-4 text-primary-600 hover:text-primary-700"
+            className="p-4 text-purple-600 hover:text-purple-800"
           >
             <IoAddOutline className="text-3xl" />
           </Link>
-          <button className="p-4 text-gray-600 hover:text-gray-900">
+          <button className="p-4 text-purple-600 hover:text-purple-800">
             <IoSettingsOutline className="text-2xl" />
           </button>
         </div>
@@ -228,19 +189,21 @@ function AddItem() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-end justify-center sm:items-center p-4 z-50">
-          <div className="bg-white w-full max-w-sm rounded-2xl p-6 space-y-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end justify-center sm:items-center p-4 z-50">
+          <div className="bg-white w-full max-w-sm rounded-2xl p-6 space-y-4 shadow-xl">
             <h2 className="text-xl font-semibold text-gray-800">确认删除</h2>
             <p className="text-gray-600">确定要删除这个物品吗？此操作不可撤销。</p>
             <div className="flex gap-3 pt-2">
               <button 
-                className="flex-1 py-3 px-4 rounded-lg bg-gray-100 text-gray-700 font-medium"
+                className="flex-1 py-3 px-4 rounded-xl bg-gray-100 text-gray-700 font-medium
+                hover:bg-gray-200 transition-colors duration-200"
                 onClick={() => setShowDeleteConfirm(false)}
               >
                 取消
               </button>
               <button 
-                className="flex-1 py-3 px-4 rounded-lg bg-danger-600 text-white font-medium"
+                className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-red-500 to-red-600 
+                text-white font-medium hover:from-red-600 hover:to-red-700 transition-all duration-200"
                 onClick={handleDelete}
               >
                 确认删除
