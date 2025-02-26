@@ -4,12 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoTrashOutline, IoArrowBack, IoCalendarOutline } from "react-icons/io5";
-import { zhCN } from 'date-fns/locale';
+import { zhCN } from 'date-fns/locale/zh-CN';
+import { enUS } from 'date-fns/locale/en-US';
+import { fr } from 'date-fns/locale/fr';
 import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 import { formatDate } from '../utils/formatters';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function AddItem() {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [purchaseDate, setPurchaseDate] = useState(new Date());
@@ -20,6 +24,19 @@ function AddItem() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeIcon, setActiveIcon] = useState(null);
+
+  // 获取与当前语言匹配的日期本地化
+  const getLocale = () => {
+    switch (language) {
+      case 'zh':
+        return zhCN;
+      case 'fr':
+        return fr;
+      case 'en':
+      default:
+        return enUS;
+    }
+  };
 
   // Reset form when pathname changes
   useEffect(() => {
@@ -180,7 +197,7 @@ function AddItem() {
               text-left"
               onClick={() => setShowDatePicker(!showDatePicker)}
             >
-              {formatDate(purchaseDate)}
+              {formatDate(purchaseDate, language)}
               <div className="text-purple-500">
                 <IoCalendarOutline className="text-lg" />
               </div>
@@ -192,7 +209,7 @@ function AddItem() {
                   className="fixed inset-0 bg-black/20 z-30" 
                   onClick={() => setShowDatePicker(false)}
                 ></div>
-                <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full">
+                <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full max-w-[320px] left-1/2 -translate-x-1/2">
                   <DayPicker
                     mode="single"
                     selected={purchaseDate}
@@ -203,12 +220,13 @@ function AddItem() {
                       }
                     }}
                     defaultMonth={purchaseDate}
-                    locale={zhCN}
+                    locale={getLocale()}
                     toDate={new Date()}
                     modifiersClassNames={{
                       selected: 'bg-purple-600 text-white',
                       today: 'text-red-500 font-bold'
                     }}
+                    className="p-2"
                   />
                 </div>
               </div>

@@ -1,3 +1,8 @@
+import { format } from 'date-fns';
+import { zhCN } from 'date-fns/locale/zh-CN';
+import { enUS } from 'date-fns/locale/en-US';
+import { fr } from 'date-fns/locale/fr';
+
 export const formatCurrency = (number) => {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
@@ -5,10 +10,10 @@ export const formatCurrency = (number) => {
   }).format(number);
 };
 
-export const formatDate = (date) => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}/${month}/${day}`;
+export const formatDate = (date, language = 'en') => {
+  // 根据语言获取适当的locale
+  const locale = language === 'zh' ? zhCN : 
+                language === 'fr' ? fr : enUS;
+  
+  return format(new Date(date), 'yyyy-MM-dd', { locale });
 }; 
