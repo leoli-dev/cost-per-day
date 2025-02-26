@@ -3,16 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { getSetting, updateSetting } from '../services/db';
 import i18n from '../i18n';
 
-// 创建上下文
+// Create context
 const LanguageContext = createContext();
 
-// 创建提供者组件
+// Create provider component
 export const LanguageProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const { t } = useTranslation();
 
-  // 从数据库加载语言设置
+  // Load language settings from database
   useEffect(() => {
     const loadLanguage = async () => {
       try {
@@ -30,7 +30,7 @@ export const LanguageProvider = ({ children }) => {
     loadLanguage();
   }, []);
 
-  // 切换语言
+  // Change language
   const changeLanguage = async (languageCode) => {
     try {
       await i18n.changeLanguage(languageCode);
@@ -43,7 +43,7 @@ export const LanguageProvider = ({ children }) => {
 
   if (loading) {
     return <div className="flex items-center justify-center h-screen">
-      <div className="text-purple-600">加载中...</div>
+      <div className="text-purple-600">Loading...</div>
     </div>;
   }
 
@@ -54,5 +54,5 @@ export const LanguageProvider = ({ children }) => {
   );
 };
 
-// 自定义钩子
+// Custom hook
 export const useLanguage = () => useContext(LanguageContext); 

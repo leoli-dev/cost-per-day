@@ -3,7 +3,7 @@ const DB_VERSION = 1;
 const ITEMS_STORE_NAME = 'items';
 const SETTINGS_STORE_NAME = 'settings';
 
-// 默认设置 - 现在直接导出
+// Default settings - directly exported
 export const DEFAULT_SETTINGS = {
   language: 'en',
   currency: '$'
@@ -24,24 +24,24 @@ export const initDB = () => {
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       
-      // 创建 items 表
+      // Create items table
       if (!db.objectStoreNames.contains(ITEMS_STORE_NAME)) {
         const store = db.createObjectStore(ITEMS_STORE_NAME, { 
           keyPath: 'id',
           autoIncrement: true 
         });
-        // 创建索引
+        // Create indexes
         store.createIndex('name', 'name', { unique: false });
         store.createIndex('purchaseDate', 'purchaseDate', { unique: false });
       }
       
-      // 创建 settings 表
+      // Create settings table
       if (!db.objectStoreNames.contains(SETTINGS_STORE_NAME)) {
         const settingsStore = db.createObjectStore(SETTINGS_STORE_NAME, { 
           keyPath: 'key'
         });
         
-        // 初始化默认设置
+        // Initialize default settings
         settingsStore.add({ key: 'language', value: DEFAULT_SETTINGS.language });
         settingsStore.add({ key: 'currency', value: DEFAULT_SETTINGS.currency });
       }
@@ -117,7 +117,7 @@ export const deleteItem = async (id) => {
   });
 };
 
-// 获取设置
+// Get setting
 export const getSetting = async (key) => {
   const db = await initDB();
   return new Promise((resolve, reject) => {
@@ -139,7 +139,7 @@ export const getSetting = async (key) => {
   });
 };
 
-// 获取所有设置
+// Get all settings
 export const getAllSettings = async () => {
   const db = await initDB();
   return new Promise((resolve, reject) => {
@@ -165,7 +165,7 @@ export const getAllSettings = async () => {
   });
 };
 
-// 更新设置
+// Update setting
 export const updateSetting = async (key, value) => {
   const db = await initDB();
   return new Promise((resolve, reject) => {

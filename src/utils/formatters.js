@@ -11,7 +11,7 @@ export const formatCurrency = (number) => {
 };
 
 export const formatDate = (date, language = 'en') => {
-  // 根据语言获取适当的locale
+  // Get appropriate locale based on language
   const locale = language === 'zh' ? zhCN : 
                 language === 'fr' ? fr : enUS;
   

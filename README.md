@@ -1,6 +1,6 @@
-# Cost Per Day Tracker
+# Cost Per Day
 
-A simple yet powerful web application to track your daily costs for purchased items. This app helps you understand how much you're spending per day on your purchases by calculating the daily cost from the purchase date until now.
+A progressive web application that helps you track the daily cost of your purchased items. Calculate how much your possessions cost you per day from the purchase date until now.
 
 ## Features
 
@@ -10,12 +10,19 @@ A simple yet powerful web application to track your daily costs for purchased it
   - Add new items with name, price, and purchase date
   - Edit existing items
   - Delete items with confirmation
+- **Data Management**:
+  - Export data to JSON file
+  - Import data from JSON file
+  - Data persistence using IndexedDB
+- **Customization**:
+  - Multiple language support (English, French, Chinese)
+  - Currency selection (USD, EUR, CNY)
 - **Modern UI/UX**:
-  - Responsive design
-  - Smooth animations
-  - Intuitive interface
-  - Date picker with month/year selection
-- **Persistent Storage**: Uses IndexedDB for local data storage
+  - Responsive design for mobile and desktop
+  - Smooth animations and transitions
+  - Intuitive navigation
+  - Mobile-optimized date picker
+  - Progressive Web App capabilities
 
 ## Getting Started
 
@@ -28,7 +35,7 @@ A simple yet powerful web application to track your daily costs for purchased it
 
 1. Clone the repository:
 ```bash
-git clone git@github.com:leoli-dev/cost-per-day.git
+git clone https://github.com/leoli-dev/cost-per-day.git
 cd cost-per-day
 ```
 
@@ -56,32 +63,65 @@ The build files will be created in the `build` folder.
 
 ## How to Use
 
-1. **Adding Items**
-   - Click the "添加新物品" (Add New Item) button
-   - Enter the item name
-   - Input the purchase price
-   - Select the purchase date
-   - Click "保存" (Save)
+### Adding Items
+1. Click the "+" icon in the bottom navigation
+2. Enter the item name
+3. Input the purchase price
+4. Select the purchase date using the date picker
+5. Click "Save"
 
-2. **Editing Items**
-   - Click the "修改" (Edit) button on any item
-   - Modify the details as needed
-   - Click "保存" (Save) to update
+### Viewing Items
+1. The home screen displays all your items with their daily cost
+2. The total daily cost is shown at the top
+3. Click on any item to expand and see details
 
-3. **Deleting Items**
-   - Go to the edit page of an item
-   - Click the "删除物品" (Delete Item) button
-   - Confirm the deletion in the popup dialog
+### Editing Items
+1. Click on an item to expand it
+2. Click the "Edit" button
+3. Modify the details as needed
+4. Click "Save" to update
 
-4. **Viewing Costs**
-   - The total daily cost is displayed at the top
-   - Each item shows its individual daily cost
-   - All costs are automatically updated based on the current date
+### Deleting Items
+1. Navigate to the edit page of an item
+2. Click the "Delete Item" button
+3. Confirm the deletion in the popup dialog
+
+### Managing Data
+1. Go to the Settings page by clicking the gear icon
+2. Under "Data Management":
+   - Click "Export Data" to download your data as a JSON file
+   - Click "Import Data" to upload a previously exported JSON file
+
+### Changing Settings
+1. Go to the Settings page
+2. Change language: Select from English, French, or Chinese
+3. Change currency: Select from USD ($), EUR (€), or CNY (¥)
 
 ## Technologies Used
 
-- React
-- React Router
-- IndexedDB
-- CSS3 with modern features
-- date-fns for date handling
+- **Frontend**: React, React Router
+- **State Management**: React Context API
+- **Styling**: Tailwind CSS
+- **Storage**: IndexedDB
+- **Internationalization**: i18next
+- **Icons**: React Icons
+
+## Browser Support
+
+The application works on all modern browsers including:
+- Chrome (and Chromium-based browsers)
+- Firefox
+- Safari
+- Edge
+
+## Mobile Support
+
+The app is designed with a mobile-first approach and includes:
+- Touch-friendly interface
+- Native date picker on mobile devices
+- Responsive layout for all screen sizes
+- PWA support for installation on home screen
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
