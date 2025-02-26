@@ -1,6 +1,6 @@
 export default {
   // General
-  "appName": "每日使用成本计算器",
+  "appName": "每日成本",
   "loading": "加载中...",
   "version": "版本",
   
@@ -49,6 +49,6 @@ export default {
   
   // Alerts
   "comingSoon": "即将推出",
-  "appTitle": "每日使用成本计算器",
+  "appTitle": "每日成本",
   "appDescription": "计算物品的每日使用成本"
 }; 

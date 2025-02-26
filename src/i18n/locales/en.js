@@ -1,9 +1,9 @@
 export default {
   // General
-  "appName": "Daily Cost Calculator",
+  "appName": "Cost Per Day",
   "loading": "Loading...",
   "version": "Version",
-  "appTitle": "Daily Cost Calculator",
+  "appTitle": "Cost Per Day",
   "appDescription": "Calculate the daily cost of your items",
   
   // Header

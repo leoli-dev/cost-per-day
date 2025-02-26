@@ -1,6 +1,6 @@
 export default {
   // General
-  "appName": "Calculateur de Coût Quotidien",
+  "appName": "Coût Par Jour",
   "loading": "Chargement...",
   "version": "Version",
   
@@ -49,6 +49,6 @@ export default {
   
   // Alerts
   "comingSoon": "Bientôt disponible",
-  "appTitle": "Calculateur de Coût Quotidien",
+  "appTitle": "Coût Par Jour",
   "appDescription": "Calculez le coût quotidien de vos articles"
 }; 
