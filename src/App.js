@@ -7,11 +7,14 @@ import Settings from './components/Settings';
 import Footer from './components/Footer';
 import PageMetadata from './components/PageMetadata';
 import { useTranslation } from 'react-i18next';
+import { TotalCostProvider, useTotalCost } from './contexts/TotalCostContext';
+import { formatCurrency } from './utils/formatters';
 
 // Header component that changes title based on route
 const Header = () => {
   const location = useLocation();
   const { t } = useTranslation();
+  const { totalDailyCost } = useTotalCost();
   
   const getTitle = () => {
     switch(location.pathname) {
@@ -34,7 +37,7 @@ const Header = () => {
         </h1>
         {location.pathname === '/' && (
           <p className="text-white text-4xl font-orbitron font-bold tracking-wider mt-2">
-            $0.00<span className="text-lg">{t('perDay')}</span>
+            ${formatCurrency(totalDailyCost)}<span className="text-lg">{t('perDay')}</span>
           </p>
         )}
       </div>
@@ -72,11 +75,13 @@ function App() {
   return (
     <LanguageProvider>
       <PageMetadata />
-      <Router>
-        <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 h-full bg-gray-50 flex flex-col">
-          <AppContent />
-        </div>
-      </Router>
+      <TotalCostProvider>
+        <Router>
+          <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 h-full bg-gray-50 flex flex-col">
+            <AppContent />
+          </div>
+        </Router>
+      </TotalCostProvider>
     </LanguageProvider>
   );
 }

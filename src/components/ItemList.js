@@ -6,16 +6,17 @@ import { IoChevronDown, IoChevronForward, IoCalendar, IoCash, IoTrash } from 're
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { calculateDailyCost, formatCurrency as calculateCurrency } from '../utils/costCalculator';
 import { format, differenceInDays } from 'date-fns';
+import { useTotalCost } from '../contexts/TotalCostContext';
 
 function ItemList() {
   const { t } = useTranslation();
   const [items, setItems] = useState([]);
-  const [totalDailyCost, setTotalDailyCost] = useState(0);
   const [expandedItem, setExpandedItem] = useState(null);
   const [activeIcon, setActiveIcon] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const navigate = useNavigate();
+  const { setTotalDailyCost } = useTotalCost();
 
   useEffect(() => {
     const loadItems = async () => {
@@ -34,7 +35,7 @@ function ItemList() {
     };
 
     loadItems();
-  }, []);
+  }, [setTotalDailyCost]);
 
   const handleEditItem = (item) => {
     navigate(`/edit?id=${item.id}`);
@@ -44,13 +45,15 @@ function ItemList() {
     if (itemToDelete) {
       await deleteItem(itemToDelete.id);
       setItems(items.filter(i => i.id !== itemToDelete.id));
-      // 重新计算总成本
+      
+      // Recalculate total cost after deletion
       const newTotal = items
         .filter(i => i.id !== itemToDelete.id)
         .reduce((sum, item) => {
           return sum + Number(calculateDailyCost(item.price, item.purchaseDate));
         }, 0);
       setTotalDailyCost(newTotal);
+      
       setShowDeleteModal(false);
       setItemToDelete(null);
     }
@@ -66,12 +69,6 @@ function ItemList() {
       setActiveIcon(null);
     }, 1000);
   };
-
-  // Update the App.js Header with total cost
-  useEffect(() => {
-    // Update the header with total cost via context or another mechanism
-    // This is a placeholder for now
-  }, [totalDailyCost]);
 
   return (
     <div className="px-4 py-6 space-y-4 home-page-content">
