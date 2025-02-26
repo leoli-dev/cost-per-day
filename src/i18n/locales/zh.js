@@ -48,5 +48,7 @@ export default {
   "cny": "人民币 (CNY)",
   
   // Alerts
-  "comingSoon": "即将推出"
+  "comingSoon": "即将推出",
+  "appTitle": "每日使用成本计算器",
+  "appDescription": "计算物品的每日使用成本"
 }; 

@@ -3,6 +3,8 @@ export default {
   "appName": "Daily Cost Calculator",
   "loading": "Loading...",
   "version": "Version",
+  "appTitle": "Daily Cost Calculator",
+  "appDescription": "Calculate the daily cost of your items",
   
   // Header
   "totalDailyCost": "Total Daily Cost",

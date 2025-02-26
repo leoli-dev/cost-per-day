@@ -48,5 +48,7 @@ export default {
   "cny": "Yuan Chinois (CNY)",
   
   // Alerts
-  "comingSoon": "Bientôt disponible"
+  "comingSoon": "Bientôt disponible",
+  "appTitle": "Calculateur de Coût Quotidien",
+  "appDescription": "Calculez le coût quotidien de vos articles"
 }; 
