@@ -608,6 +608,7 @@ h1 {
 
 .settings-page-content {
   padding-top: 100px; /* For settings page */
+  margin-bottom: 65px;
 }
 
 .form-page-content {
