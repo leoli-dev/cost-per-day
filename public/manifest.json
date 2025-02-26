@@ -1,6 +1,6 @@
 {
-  "short_name": "每日成本",
-  "name": "每日使用成本计算器",
+  "short_name": "CostPerDay",
+  "name": "Cost Per Day",
   "icons": [
     {
       "src": "favicon.ico",
