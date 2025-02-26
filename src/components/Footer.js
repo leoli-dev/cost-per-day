@@ -23,7 +23,7 @@ function Footer() {
   
   return (
     <div className="fixed bottom-0 left-0 right-0 backdrop-blur-md bg-white/90 border-t border-purple-100 app-footer">
-      <div className="max-w-lg mx-auto px-4 h-full flex justify-around items-center">
+      <div className="max-w-lg mx-auto px-4 flex justify-around items-center h-full w-full">
         <button 
           className="relative p-3 group"
           onClick={() => handleIconClick('home', '/')}

@@ -596,10 +596,12 @@ h1 {
   padding-bottom: calc(65px + env(safe-area-inset-bottom));
 }
 
-/* Update footer styles to take less space */
+/* Update footer styles to handle iOS safe areas correctly */
 .app-footer {
-  height: calc(65px + env(safe-area-inset-bottom));
+  height: 65px;
   padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  align-items: center;
 }
 
 .footer-icon {
