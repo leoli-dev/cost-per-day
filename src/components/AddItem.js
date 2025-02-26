@@ -11,13 +11,13 @@ import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 import { formatDate } from '../utils/formatters';
 import { useLanguage } from '../contexts/LanguageContext';
 
-// 自定义日期选择器标题组件
+// Custom date picker caption component
 function CustomCaption({ date, locale, goToMonth, goToYear }) {
   const { t } = useTranslation();
   const [yearInput, setYearInput] = useState(date.getFullYear());
   const [showYearInput, setShowYearInput] = useState(false);
   
-  // 生成月份选项
+  // Generate month options
   const getMonthOptions = () => {
     const options = [];
     const formatter = new Intl.DateTimeFormat(locale.code, { month: 'long' });
@@ -34,7 +34,7 @@ function CustomCaption({ date, locale, goToMonth, goToYear }) {
     return options;
   };
   
-  // 处理年份变更
+  // Handle year change
   const handleYearSubmit = (e) => {
     e.preventDefault();
     const year = parseInt(yearInput);
@@ -46,7 +46,7 @@ function CustomCaption({ date, locale, goToMonth, goToYear }) {
   
   return (
     <div className="flex justify-between items-center p-1">
-      {/* 年份显示/输入 */}
+      {/* Year display/input */}
       {showYearInput ? (
         <form onSubmit={handleYearSubmit} className="flex">
           <input
@@ -73,7 +73,7 @@ function CustomCaption({ date, locale, goToMonth, goToYear }) {
         </button>
       )}
       
-      {/* 月份选择 */}
+      {/* Month selection */}
       <select
         value={date.getMonth()}
         onChange={(e) => goToMonth(new Date(date.getFullYear(), parseInt(e.target.value)))}
@@ -101,7 +101,7 @@ function AddItem() {
   const [activeIcon, setActiveIcon] = useState(null);
   const [month, setMonth] = useState(purchaseDate);
   
-  // 获取与当前语言匹配的日期本地化
+  // Get locale matching the current language
   const getLocale = () => {
     switch (language) {
       case 'zh':
@@ -268,22 +268,22 @@ function AddItem() {
           <div className="space-y-2">
             <label className="text-sm text-gray-600 font-medium">{t('date')}</label>
             
-            {/* 移动设备使用原生日期选择器，桌面设备使用自定义日期选择器的组合 */}
+            {/* Combination of native date picker for mobile and custom date picker for desktop */}
             <div className="relative">
-              {/* 显示当前选择的日期 - 点击后根据设备类型执行不同操作 */}
+              {/* Display current selected date - clicking performs different actions based on device type */}
               <button 
                 type="button"
                 className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-purple-100 
                 focus:border-purple-300 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200
                 text-left"
                 onClick={() => {
-                  // 检测是否为移动设备
+                  // Check if device is mobile
                   const isMobile = window.innerWidth <= 768;
                   if (isMobile) {
-                    // 移动设备上触发原生日期选择器点击
+                    // Trigger native date picker on mobile
                     document.getElementById('native-date-picker').click();
                   } else {
-                    // 桌面设备上显示自定义日期选择器
+                    // Show custom date picker on desktop
                     setShowDatePicker(!showDatePicker);
                   }
                 }}
@@ -294,7 +294,7 @@ function AddItem() {
                 </div>
               </button>
               
-              {/* 隐藏的原生日期选择器 - 移动设备上使用 */}
+              {/* Hidden native date picker - used on mobile */}
               <input
                 id="native-date-picker"
                 type="date"
@@ -308,7 +308,7 @@ function AddItem() {
                 max={new Date().toISOString().split('T')[0]}
               />
               
-              {/* 自定义日期选择器 - 桌面设备上使用 */}
+              {/* Custom date picker - used on desktop */}
               {showDatePicker && (
                 <div className="relative z-30 date-picker-container">
                   <div 
@@ -316,9 +316,9 @@ function AddItem() {
                     onClick={() => setShowDatePicker(false)}
                   ></div>
                   <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full max-w-[320px] left-1/2 -translate-x-1/2">
-                    {/* 年份和月份快速选择器 */}
+                    {/* Year and month quick selectors */}
                     <div className="flex justify-between items-center bg-gray-50 p-2 border-b">
-                      {/* 年份选择 */}
+                      {/* Year selection */}
                       <select
                         value={month.getFullYear()}
                         onChange={(e) => {
@@ -334,7 +334,7 @@ function AddItem() {
                         ))}
                       </select>
                       
-                      {/* 月份选择 */}
+                      {/* Month selection */}
                       <select
                         value={month.getMonth()}
                         onChange={(e) => {

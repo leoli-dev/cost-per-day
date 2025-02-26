@@ -1,8 +1,8 @@
 /**
- * 计算物品的每日成本
- * @param {number} price - 物品价格
- * @param {string} purchaseDate - 购买日期 (ISO 格式)
- * @returns {number} - 每日成本
+ * Calculate the daily cost of an item
+ * @param {number} price - Item price
+ * @param {string} purchaseDate - Purchase date (ISO format)
+ * @returns {number} - Daily cost
  */
 export const calculateDailyCost = (price, purchaseDate) => {
   const purchaseTime = new Date(purchaseDate).getTime();
@@ -12,9 +12,9 @@ export const calculateDailyCost = (price, purchaseDate) => {
 };
 
 /**
- * 格式化货币显示（保留两位小数）
- * @param {number} value - 要格式化的数值
- * @returns {string} - 格式化后的字符串
+ * Format currency display (with two decimal places)
+ * @param {number} value - Value to format
+ * @returns {string} - Formatted string
  */
 export const formatCurrency = (value) => {
   return Number(value).toFixed(2);
