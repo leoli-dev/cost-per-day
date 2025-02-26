@@ -67,97 +67,90 @@ function ItemList() {
     }, 1000);
   };
 
-  return (
-    <div className="pb-20">
-      {/* Header with total cost */}
-      <div className="bg-gradient-to-br from-blue-500 to-purple-600 page-header">
-        <div className="text-center py-4">
-          <h2 className="text-white text-lg font-medium">{t('totalDailyCost')}</h2>
-          <p className="text-white text-4xl font-orbitron font-bold tracking-wider mt-2">
-            ${formatCurrency(totalDailyCost)}<span className="text-lg">{t('perDay')}</span>
-          </p>
-        </div>
-      </div>
+  // Update the App.js Header with total cost
+  useEffect(() => {
+    // Update the header with total cost via context or another mechanism
+    // This is a placeholder for now
+  }, [totalDailyCost]);
 
-      {/* Item list */}
-      <div className="px-4 py-6 space-y-4 page-content">
-        {items.length === 0 ? (
-          <div className="text-center py-10 text-gray-500">
-            <p>{t('noItems')}</p>
-          </div>
-        ) : (
-          items.map((item) => (
+  return (
+    <div className="px-4 py-6 space-y-4 home-page-content">
+      {items.length === 0 ? (
+        <div className="text-center py-10 text-gray-500">
+          <p>{t('noItems')}</p>
+        </div>
+      ) : (
+        items.map((item) => (
+          <div 
+            key={item.id}
+            className="bg-white rounded-xl shadow-md overflow-hidden border border-purple-100"
+          >
             <div 
-              key={item.id}
-              className="bg-white rounded-xl shadow-md overflow-hidden border border-purple-100"
+              className="p-4 flex items-center justify-between cursor-pointer"
+              onClick={() => toggleItem(item.id)}
             >
-              <div 
-                className="p-4 flex items-center justify-between cursor-pointer"
-                onClick={() => toggleItem(item.id)}
-              >
-                <div>
-                  <h3 className="font-medium text-gray-900">{item.name}</h3>
-                  <p className="text-sm text-gray-500">
-                    ${formatCurrency(calculateDailyCost(item.price, item.purchaseDate))}{t('perDay')}
-                  </p>
-                </div>
-                <div className="flex items-center">
-                  <IoChevronDown 
-                    className={`text-purple-500 transition-transform ${expandedItem === item.id ? 'rotate-180' : ''}`} 
-                  />
+              <div>
+                <h3 className="font-medium text-gray-900">{item.name}</h3>
+                <p className="text-sm text-gray-500">
+                  ${formatCurrency(calculateDailyCost(item.price, item.purchaseDate))}{t('perDay')}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <IoChevronDown 
+                  className={`text-purple-500 transition-transform ${expandedItem === item.id ? 'rotate-180' : ''}`} 
+                />
+              </div>
+            </div>
+            
+            {expandedItem === item.id && (
+              <div className="px-4 pb-4 border-t border-gray-100 pt-3">
+                <div className="space-y-3">
+                  <div className="flex items-start">
+                    <div 
+                      className={`p-2 rounded-lg ${activeIcon === 'price' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-500'}`}
+                      onMouseEnter={() => setActiveIcon('price')}
+                      onMouseLeave={() => setActiveIcon(null)}
+                    >
+                      <IoCash className="text-lg" />
+                    </div>
+                    <div className="ml-3">
+                      <div className="text-xs text-gray-500">{t('purchaseAmount')}</div>
+                      <div className="font-medium">${formatCurrency(item.price)}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div 
+                      className={`p-2 rounded-lg ${activeIcon === 'date' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-500'}`}
+                      onMouseEnter={() => setActiveIcon('date')}
+                      onMouseLeave={() => setActiveIcon(null)}
+                    >
+                      <IoCalendar className="text-lg" />
+                    </div>
+                    <div className="ml-3">
+                      <div className="text-xs text-gray-500">{t('purchaseDate')}</div>
+                      <div className="font-medium">
+                        {format(new Date(item.purchaseDate), 'yyyy-MM-dd')} 
+                        <span className="text-sm text-gray-500 ml-2">
+                          ({differenceInDays(new Date(), new Date(item.purchaseDate))} {t('daysAgo')})
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button
+                    className="w-full mt-3 flex items-center justify-center gap-2 p-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+                    onClick={() => handleEditItem(item)}
+                  >
+                    {t('edit')} <IoChevronForward />
+                  </button>
                 </div>
               </div>
-              
-              {expandedItem === item.id && (
-                <div className="px-4 pb-4 border-t border-gray-100 pt-3">
-                  <div className="space-y-3">
-                    <div className="flex items-start">
-                      <div 
-                        className={`p-2 rounded-lg ${activeIcon === 'price' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-500'}`}
-                        onMouseEnter={() => setActiveIcon('price')}
-                        onMouseLeave={() => setActiveIcon(null)}
-                      >
-                        <IoCash className="text-lg" />
-                      </div>
-                      <div className="ml-3">
-                        <div className="text-xs text-gray-500">{t('purchaseAmount')}</div>
-                        <div className="font-medium">${formatCurrency(item.price)}</div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <div 
-                        className={`p-2 rounded-lg ${activeIcon === 'date' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-500'}`}
-                        onMouseEnter={() => setActiveIcon('date')}
-                        onMouseLeave={() => setActiveIcon(null)}
-                      >
-                        <IoCalendar className="text-lg" />
-                      </div>
-                      <div className="ml-3">
-                        <div className="text-xs text-gray-500">{t('purchaseDate')}</div>
-                        <div className="font-medium">
-                          {format(new Date(item.purchaseDate), 'yyyy-MM-dd')} 
-                          <span className="text-sm text-gray-500 ml-2">
-                            ({differenceInDays(new Date(), new Date(item.purchaseDate))} {t('daysAgo')})
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <button
-                      className="w-full mt-3 flex items-center justify-center gap-2 p-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors"
-                      onClick={() => handleEditItem(item)}
-                    >
-                      {t('edit')} <IoChevronForward />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-
+            )}
+          </div>
+        ))
+      )}
+      
       {/* Delete confirmation modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

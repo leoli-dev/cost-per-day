@@ -281,8 +281,8 @@ function Settings() {
   }
 
   return (
-    <div>
-      <div className="bg-gradient-to-br from-blue-500 to-purple-600 page-header">
+    <>
+      <div className="page-header">
         <div className="text-center py-4">
           <h1 className="text-2xl font-bold text-white">
             {t('settings')}
@@ -290,7 +290,7 @@ function Settings() {
         </div>
       </div>
       
-      <div className="px-4 space-y-6 page-content mt-4">
+      <div className="px-4 space-y-6 page-content settings-page-content mt-4">
         {/* Notification */}
         {notification && (
           <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg
@@ -449,7 +449,7 @@ function Settings() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

@@ -224,9 +224,9 @@ function AddItem() {
   };
 
   return (
-    <div className="pb-20">
+    <>
       {/* Header */}
-      <div className="bg-gradient-to-br from-blue-500 to-purple-600 page-header">
+      <div className="page-header">
         <div className="text-center py-4">
           <h1 className="text-2xl font-bold text-white">
             {isEditMode ? t('editItem') : t('addNewItem')}
@@ -234,8 +234,8 @@ function AddItem() {
         </div>
       </div>
 
-      {/* Form */}
-      <div className="px-4 py-6 space-y-6 page-content">
+      {/* Form - main content */}
+      <div className="px-4 py-6 space-y-6 page-content form-page-content">
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
             <div className="space-y-2">
@@ -436,7 +436,7 @@ function AddItem() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

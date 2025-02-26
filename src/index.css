@@ -582,24 +582,49 @@ h1 {
   color: #6b7280;
 }
 
-/* Add these styles to fix the spacing issues */
+/* Layout styles for consistent page structure */
 .page-header {
-  padding-top: max(16px, env(safe-area-inset-top));
-  padding-bottom: 12px;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 10;
+  padding-top: max(16px, env(safe-area-inset-top));
   background-image: linear-gradient(to right, #3b82f6, #8b5cf6);
 }
 
 .page-content {
+  flex: 1;
+  overflow-y: auto;
   padding-bottom: calc(65px + env(safe-area-inset-bottom));
+  height: 100%;
+  width: 100%;
 }
 
-/* Update footer styles to handle iOS safe areas correctly */
+/* Page-specific padding classes */
+.home-page-content {
+  padding-top: 150px; /* For home page with total cost display */
+}
+
+.settings-page-content {
+  padding-top: 100px; /* For settings page */
+}
+
+.form-page-content {
+  padding-top: 80px; /* For add/edit item pages */
+}
+
 .app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 65px;
   padding-bottom: env(safe-area-inset-bottom);
+  z-index: 10;
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid #f3e8ff;
 }
 
 .footer-icon {
