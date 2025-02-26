@@ -99,8 +99,6 @@ function AddItem() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeIcon, setActiveIcon] = useState(null);
-  
-  // 设置月份跳转函数
   const [month, setMonth] = useState(purchaseDate);
   
   // 获取与当前语言匹配的日期本地化
@@ -140,19 +138,28 @@ function AddItem() {
       
       const isEdit = location.pathname === '/edit';
       
-      if (isEdit && editId) {
+      if (isEdit) {
+        if (!editId) {
+          console.error('Edit mode requires an ID parameter');
+          navigate('/');
+          return;
+        }
+        
         try {
           const items = await getAllItems();
           const item = items.find(item => item.id === parseInt(editId));
-          if (item) {
-            setIsEditMode(true);
-            setEditIndex(item.id);
-            setName(item.name);
-            setPrice(item.price.toString());
-            setPurchaseDate(new Date(item.purchaseDate));
-          } else {
+          
+          if (!item) {
+            console.error('Invalid item ID:', editId);
             navigate('/');
+            return;
           }
+          
+          setIsEditMode(true);
+          setEditIndex(item.id);
+          setName(item.name);
+          setPrice(item.price.toString());
+          setPurchaseDate(new Date(item.purchaseDate));
         } catch (error) {
           console.error('Error loading item:', error);
           navigate('/');

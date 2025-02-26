@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getAllItems, deleteItem } from '../services/db';
-import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoChevronDown, IoChevronForward, IoTime, IoCalendar, IoTrash } from 'react-icons/io5';
+import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoChevronDown, IoChevronForward, IoCalendar, IoCash, IoTrash } from 'react-icons/io5';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { calculateDailyCost, formatCurrency as calculateCurrency } from '../utils/costCalculator';
 import { format, differenceInDays } from 'date-fns';
@@ -37,7 +37,7 @@ function ItemList() {
   }, []);
 
   const handleEditItem = (item) => {
-    navigate('/edit', { state: { item } });
+    navigate(`/edit?id=${item.id}`);
   };
 
   const confirmDelete = async () => {
@@ -118,7 +118,7 @@ function ItemList() {
                           onMouseEnter={() => setActiveIcon('price')}
                           onMouseLeave={() => setActiveIcon(null)}
                         >
-                          <IoTime className="text-lg" />
+                          <IoCash className="text-lg" />
                         </div>
                         <div className="ml-3">
                           <div className="text-xs text-gray-500">{t('purchaseAmount')}</div>
