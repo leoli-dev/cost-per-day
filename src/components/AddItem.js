@@ -236,175 +236,179 @@ function AddItem() {
 
       {/* Form */}
       <div className="px-4 py-6 space-y-6 page-content">
-        <div className="space-y-2">
-          <label className="text-sm text-gray-600 font-medium">{t('itemName')}</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder={t('enterItemName')}
-            className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
-            focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <label className="text-sm text-gray-600 font-medium">{t('price')}</label>
-          <div className="relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">$</div>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-              min="0.01"
-              step="0.01"
-              placeholder={t('enterPrice')}
-              className="w-full px-4 py-3 pl-8 rounded-xl border border-purple-100 focus:border-purple-300 
-              focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
-            />
-          </div>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="text-sm text-gray-600 font-medium">{t('date')}</label>
-          
-          {/* Combination of native date picker for mobile and custom date picker for desktop */}
-          <div className="relative">
-            {/* Display current selected date - clicking performs different actions based on device type */}
-            <button 
-              type="button"
-              className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-purple-100 
-              focus:border-purple-300 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200
-              text-left"
-              onClick={() => {
-                // Check if device is mobile
-                const isMobile = window.innerWidth <= 768;
-                if (isMobile) {
-                  // Trigger native date picker on mobile
-                  document.getElementById('native-date-picker').click();
-                } else {
-                  // Show custom date picker on desktop
-                  setShowDatePicker(!showDatePicker);
-                }
-              }}
-            >
-              {formatDate(purchaseDate, language)}
-              <div className="text-purple-500">
-                <IoCalendarOutline className="text-lg" />
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm text-gray-600 font-medium">{t('itemName')}</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder={t('enterItemName')}
+                className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
+                focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm text-gray-600 font-medium">{t('price')}</label>
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">$</div>
+                <input
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                  min="0.01"
+                  step="0.01"
+                  placeholder={t('enterPrice')}
+                  className="w-full px-4 py-3 pl-8 rounded-xl border border-purple-100 focus:border-purple-300 
+                  focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
+                />
               </div>
-            </button>
+            </div>
             
-            {/* Hidden native date picker - used on mobile */}
-            <input
-              id="native-date-picker"
-              type="date"
-              className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
-              value={purchaseDate.toISOString().split('T')[0]}
-              onChange={(e) => {
-                if (e.target.value) {
-                  setPurchaseDate(new Date(e.target.value));
-                }
-              }}
-              max={new Date().toISOString().split('T')[0]}
-            />
-            
-            {/* Custom date picker - used on desktop */}
-            {showDatePicker && (
-              <div className="relative z-30 date-picker-container">
-                <div 
-                  className="fixed inset-0 bg-black/20 z-30" 
-                  onClick={() => setShowDatePicker(false)}
-                ></div>
-                <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full max-w-[320px] left-1/2 -translate-x-1/2">
-                  {/* Year and month quick selectors */}
-                  <div className="flex justify-between items-center bg-gray-50 p-2 border-b">
-                    {/* Year selection */}
-                    <select
-                      value={month.getFullYear()}
-                      onChange={(e) => {
-                        const year = parseInt(e.target.value);
-                        const newDate = new Date(month);
-                        newDate.setFullYear(year);
-                        setMonth(newDate);
-                      }}
-                      className="px-2 py-1 border border-gray-300 rounded-md"
-                    >
-                      {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                        <option key={year} value={year}>{year}</option>
-                      ))}
-                    </select>
-                    
-                    {/* Month selection */}
-                    <select
-                      value={month.getMonth()}
-                      onChange={(e) => {
-                        const monthIndex = parseInt(e.target.value);
-                        const newDate = new Date(month);
-                        newDate.setMonth(monthIndex);
-                        setMonth(newDate);
-                      }}
-                      className="px-2 py-1 border border-gray-300 rounded-md"
-                    >
-                      {Array.from({ length: 12 }, (_, i) => i).map(monthIndex => {
-                        const monthName = new Intl.DateTimeFormat(getLocale().code, { month: 'long' }).format(new Date(2000, monthIndex));
-                        return (
-                          <option key={monthIndex} value={monthIndex}>{monthName}</option>
-                        );
-                      })}
-                    </select>
+            <div className="space-y-2">
+              <label className="text-sm text-gray-600 font-medium">{t('date')}</label>
+              
+              {/* Combination of native date picker for mobile and custom date picker for desktop */}
+              <div className="relative">
+                {/* Display current selected date - clicking performs different actions based on device type */}
+                <button 
+                  type="button"
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-purple-100 
+                  focus:border-purple-300 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200
+                  text-left"
+                  onClick={() => {
+                    // Check if device is mobile
+                    const isMobile = window.innerWidth <= 768;
+                    if (isMobile) {
+                      // Trigger native date picker on mobile
+                      document.getElementById('native-date-picker').click();
+                    } else {
+                      // Show custom date picker on desktop
+                      setShowDatePicker(!showDatePicker);
+                    }
+                  }}
+                >
+                  {formatDate(purchaseDate, language)}
+                  <div className="text-purple-500">
+                    <IoCalendarOutline className="text-lg" />
                   </div>
-                  
-                  <DayPicker
-                    mode="single"
-                    selected={purchaseDate}
-                    onSelect={(date) => {
-                      if (date) {
-                        setPurchaseDate(date);
-                        setShowDatePicker(false);
-                      }
-                    }}
-                    month={month}
-                    onMonthChange={setMonth}
-                    locale={getLocale()}
-                    toDate={new Date()}
-                    modifiersClassNames={{
-                      selected: 'bg-purple-600 text-white',
-                      today: 'text-red-500 font-bold'
-                    }}
-                    className="p-2"
-                  />
-                </div>
+                </button>
+                
+                {/* Hidden native date picker - used on mobile */}
+                <input
+                  id="native-date-picker"
+                  type="date"
+                  className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
+                  value={purchaseDate.toISOString().split('T')[0]}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      setPurchaseDate(new Date(e.target.value));
+                    }
+                  }}
+                  max={new Date().toISOString().split('T')[0]}
+                />
+                
+                {/* Custom date picker - used on desktop */}
+                {showDatePicker && (
+                  <div className="relative z-30 date-picker-container">
+                    <div 
+                      className="fixed inset-0 bg-black/20 z-30" 
+                      onClick={() => setShowDatePicker(false)}
+                    ></div>
+                    <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full max-w-[320px] left-1/2 -translate-x-1/2">
+                      {/* Year and month quick selectors */}
+                      <div className="flex justify-between items-center bg-gray-50 p-2 border-b">
+                        {/* Year selection */}
+                        <select
+                          value={month.getFullYear()}
+                          onChange={(e) => {
+                            const year = parseInt(e.target.value);
+                            const newDate = new Date(month);
+                            newDate.setFullYear(year);
+                            setMonth(newDate);
+                          }}
+                          className="px-2 py-1 border border-gray-300 rounded-md"
+                        >
+                          {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                            <option key={year} value={year}>{year}</option>
+                          ))}
+                        </select>
+                        
+                        {/* Month selection */}
+                        <select
+                          value={month.getMonth()}
+                          onChange={(e) => {
+                            const monthIndex = parseInt(e.target.value);
+                            const newDate = new Date(month);
+                            newDate.setMonth(monthIndex);
+                            setMonth(newDate);
+                          }}
+                          className="px-2 py-1 border border-gray-300 rounded-md"
+                        >
+                          {Array.from({ length: 12 }, (_, i) => i).map(monthIndex => {
+                            const monthName = new Intl.DateTimeFormat(getLocale().code, { month: 'long' }).format(new Date(2000, monthIndex));
+                            return (
+                              <option key={monthIndex} value={monthIndex}>{monthName}</option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                      
+                      <DayPicker
+                        mode="single"
+                        selected={purchaseDate}
+                        onSelect={(date) => {
+                          if (date) {
+                            setPurchaseDate(date);
+                            setShowDatePicker(false);
+                          }
+                        }}
+                        month={month}
+                        onMonthChange={setMonth}
+                        locale={getLocale()}
+                        toDate={new Date()}
+                        modifiersClassNames={{
+                          selected: 'bg-purple-600 text-white',
+                          today: 'text-red-500 font-bold'
+                        }}
+                        className="p-2"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-        
-        <div className="space-y-4 pt-4">
-          <button 
-            type="submit" 
-            className="w-full py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-medium
-            hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg
-            disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
-            disabled={!isFormValid}
-          >
-            {t('save')}
-          </button>
+            </div>
+            
+            <div className="space-y-4 pt-4">
+              <button 
+                type="submit" 
+                className="w-full py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-medium
+                hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg
+                disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
+                disabled={!isFormValid}
+              >
+                {t('save')}
+              </button>
 
-          {isEditMode && (
-            <button 
-              type="button"
-              className="w-full py-3.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium
-              hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-md hover:shadow-lg
-              flex items-center justify-center gap-2"
-              onClick={() => setShowDeleteConfirm(true)}
-            >
-              <IoTrashOutline className="text-xl" />
-              {t('deleteItem')}
-            </button>
-          )}
-        </div>
+              {isEditMode && (
+                <button 
+                  type="button"
+                  className="w-full py-3.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium
+                  hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-md hover:shadow-lg
+                  flex items-center justify-center gap-2"
+                  onClick={() => setShowDeleteConfirm(true)}
+                >
+                  <IoTrashOutline className="text-xl" />
+                  {t('deleteItem')}
+                </button>
+              )}
+            </div>
+          </div>
+        </form>
       </div>
 
       {/* Delete Confirmation Modal */}
