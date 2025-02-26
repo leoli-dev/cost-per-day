@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { DayPicker } from 'react-day-picker';
+import { DayPicker, useNavigation } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoTrashOutline, IoArrowBack, IoCalendarOutline } from "react-icons/io5";
 import { zhCN } from 'date-fns/locale/zh-CN';
@@ -10,6 +10,81 @@ import { fr } from 'date-fns/locale/fr';
 import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 import { formatDate } from '../utils/formatters';
 import { useLanguage } from '../contexts/LanguageContext';
+
+// 自定义日期选择器标题组件
+function CustomCaption({ date, locale, goToMonth, goToYear }) {
+  const { t } = useTranslation();
+  const [yearInput, setYearInput] = useState(date.getFullYear());
+  const [showYearInput, setShowYearInput] = useState(false);
+  
+  // 生成月份选项
+  const getMonthOptions = () => {
+    const options = [];
+    const formatter = new Intl.DateTimeFormat(locale.code, { month: 'long' });
+    
+    for (let i = 0; i < 12; i++) {
+      const monthDate = new Date(date.getFullYear(), i, 1);
+      options.push(
+        <option key={i} value={i}>
+          {formatter.format(monthDate)}
+        </option>
+      );
+    }
+    
+    return options;
+  };
+  
+  // 处理年份变更
+  const handleYearSubmit = (e) => {
+    e.preventDefault();
+    const year = parseInt(yearInput);
+    if (!isNaN(year) && year >= 1900 && year <= 2100) {
+      goToYear(year);
+      setShowYearInput(false);
+    }
+  };
+  
+  return (
+    <div className="flex justify-between items-center p-1">
+      {/* 年份显示/输入 */}
+      {showYearInput ? (
+        <form onSubmit={handleYearSubmit} className="flex">
+          <input
+            type="number"
+            value={yearInput}
+            onChange={(e) => setYearInput(e.target.value)}
+            className="w-20 px-2 py-1 border border-gray-300 rounded-md"
+            min="1900"
+            max="2100"
+          />
+          <button 
+            type="submit" 
+            className="ml-1 bg-purple-600 text-white px-2 rounded-md"
+          >
+            OK
+          </button>
+        </form>
+      ) : (
+        <button 
+          onClick={() => setShowYearInput(true)}
+          className="text-lg font-semibold hover:bg-gray-100 px-2 py-1 rounded-md"
+        >
+          {date.getFullYear()}
+        </button>
+      )}
+      
+      {/* 月份选择 */}
+      <select
+        value={date.getMonth()}
+        onChange={(e) => goToMonth(new Date(date.getFullYear(), parseInt(e.target.value)))}
+        className="text-lg px-2 py-1 border border-gray-300 rounded-md appearance-none"
+        style={{ maxWidth: '150px' }}
+      >
+        {getMonthOptions()}
+      </select>
+    </div>
+  );
+}
 
 function AddItem() {
   const { t } = useTranslation();
@@ -24,7 +99,10 @@ function AddItem() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeIcon, setActiveIcon] = useState(null);
-
+  
+  // 设置月份跳转函数
+  const [month, setMonth] = useState(purchaseDate);
+  
   // 获取与当前语言匹配的日期本地化
   const getLocale = () => {
     switch (language) {
@@ -190,47 +268,116 @@ function AddItem() {
           
           <div className="space-y-2">
             <label className="text-sm text-gray-600 font-medium">{t('date')}</label>
-            <button 
-              type="button"
-              className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-purple-100 
-              focus:border-purple-300 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200
-              text-left"
-              onClick={() => setShowDatePicker(!showDatePicker)}
-            >
-              {formatDate(purchaseDate, language)}
-              <div className="text-purple-500">
-                <IoCalendarOutline className="text-lg" />
-              </div>
-            </button>
             
-            {showDatePicker && (
-              <div className="relative z-30 date-picker-container">
-                <div 
-                  className="fixed inset-0 bg-black/20 z-30" 
-                  onClick={() => setShowDatePicker(false)}
-                ></div>
-                <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full max-w-[320px] left-1/2 -translate-x-1/2">
-                  <DayPicker
-                    mode="single"
-                    selected={purchaseDate}
-                    onSelect={(date) => {
-                      if (date) {
-                        setPurchaseDate(date);
-                        setShowDatePicker(false);
-                      }
-                    }}
-                    defaultMonth={purchaseDate}
-                    locale={getLocale()}
-                    toDate={new Date()}
-                    modifiersClassNames={{
-                      selected: 'bg-purple-600 text-white',
-                      today: 'text-red-500 font-bold'
-                    }}
-                    className="p-2"
-                  />
+            {/* 移动设备使用原生日期选择器，桌面设备使用自定义日期选择器的组合 */}
+            <div className="relative">
+              {/* 显示当前选择的日期 - 点击后根据设备类型执行不同操作 */}
+              <button 
+                type="button"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-purple-100 
+                focus:border-purple-300 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200
+                text-left"
+                onClick={() => {
+                  // 检测是否为移动设备
+                  const isMobile = window.innerWidth <= 768;
+                  if (isMobile) {
+                    // 移动设备上触发原生日期选择器点击
+                    document.getElementById('native-date-picker').click();
+                  } else {
+                    // 桌面设备上显示自定义日期选择器
+                    setShowDatePicker(!showDatePicker);
+                  }
+                }}
+              >
+                {formatDate(purchaseDate, language)}
+                <div className="text-purple-500">
+                  <IoCalendarOutline className="text-lg" />
                 </div>
-              </div>
-            )}
+              </button>
+              
+              {/* 隐藏的原生日期选择器 - 移动设备上使用 */}
+              <input
+                id="native-date-picker"
+                type="date"
+                className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
+                value={purchaseDate.toISOString().split('T')[0]}
+                onChange={(e) => {
+                  if (e.target.value) {
+                    setPurchaseDate(new Date(e.target.value));
+                  }
+                }}
+                max={new Date().toISOString().split('T')[0]}
+              />
+              
+              {/* 自定义日期选择器 - 桌面设备上使用 */}
+              {showDatePicker && (
+                <div className="relative z-30 date-picker-container">
+                  <div 
+                    className="fixed inset-0 bg-black/20 z-30" 
+                    onClick={() => setShowDatePicker(false)}
+                  ></div>
+                  <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full max-w-[320px] left-1/2 -translate-x-1/2">
+                    {/* 年份和月份快速选择器 */}
+                    <div className="flex justify-between items-center bg-gray-50 p-2 border-b">
+                      {/* 年份选择 */}
+                      <select
+                        value={month.getFullYear()}
+                        onChange={(e) => {
+                          const year = parseInt(e.target.value);
+                          const newDate = new Date(month);
+                          newDate.setFullYear(year);
+                          setMonth(newDate);
+                        }}
+                        className="px-2 py-1 border border-gray-300 rounded-md"
+                      >
+                        {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                          <option key={year} value={year}>{year}</option>
+                        ))}
+                      </select>
+                      
+                      {/* 月份选择 */}
+                      <select
+                        value={month.getMonth()}
+                        onChange={(e) => {
+                          const monthIndex = parseInt(e.target.value);
+                          const newDate = new Date(month);
+                          newDate.setMonth(monthIndex);
+                          setMonth(newDate);
+                        }}
+                        className="px-2 py-1 border border-gray-300 rounded-md"
+                      >
+                        {Array.from({ length: 12 }, (_, i) => i).map(monthIndex => {
+                          const monthName = new Intl.DateTimeFormat(getLocale().code, { month: 'long' }).format(new Date(2000, monthIndex));
+                          return (
+                            <option key={monthIndex} value={monthIndex}>{monthName}</option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                    
+                    <DayPicker
+                      mode="single"
+                      selected={purchaseDate}
+                      onSelect={(date) => {
+                        if (date) {
+                          setPurchaseDate(date);
+                          setShowDatePicker(false);
+                        }
+                      }}
+                      month={month}
+                      onMonthChange={setMonth}
+                      locale={getLocale()}
+                      toDate={new Date()}
+                      modifiersClassNames={{
+                        selected: 'bg-purple-600 text-white',
+                        today: 'text-red-500 font-bold'
+                      }}
+                      className="p-2"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           
           <div className="space-y-4 pt-4">
