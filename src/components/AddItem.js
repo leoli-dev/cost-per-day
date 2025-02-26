@@ -409,7 +409,7 @@ function AddItem() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end justify-center sm:items-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-16 p-4 z-50">
           <div className="bg-white w-full max-w-sm rounded-2xl p-6 space-y-4 shadow-xl">
             <h2 className="text-xl font-semibold text-gray-800">{t('confirmDelete')}</h2>
             <p className="text-gray-600">{t('deleteConfirmation')}</p>

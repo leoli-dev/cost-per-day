@@ -423,7 +423,7 @@ function Settings() {
       
       {/* Import Confirmation Dialog */}
       {showImportConfirm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end justify-center sm:items-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-16 p-4 z-50">
           <div className="bg-white w-full max-w-sm rounded-2xl p-6 space-y-4 shadow-xl">
             <div className="flex items-center gap-3 text-amber-500">
               <IoWarningOutline className="text-2xl" />
