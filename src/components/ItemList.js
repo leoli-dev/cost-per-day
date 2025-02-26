@@ -98,7 +98,7 @@ function ItemList() {
                 <div>
                   <h3 className="font-medium text-gray-900">{item.name}</h3>
                   <p className="text-sm text-gray-500">
-                    ${calculateCurrency(calculateDailyCost(item.price, item.purchaseDate))}{t('perDay')}
+                    ${formatCurrency(calculateDailyCost(item.price, item.purchaseDate))}{t('perDay')}
                   </p>
                 </div>
                 <div className="flex items-center">
@@ -121,7 +121,7 @@ function ItemList() {
                       </div>
                       <div className="ml-3">
                         <div className="text-xs text-gray-500">{t('purchaseAmount')}</div>
-                        <div className="font-medium">${item.price}</div>
+                        <div className="font-medium">${formatCurrency(item.price)}</div>
                       </div>
                     </div>
                     

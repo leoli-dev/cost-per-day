@@ -12,10 +12,13 @@ export const calculateDailyCost = (price, purchaseDate) => {
 };
 
 /**
- * Format currency display (with two decimal places)
+ * Format currency display (with two decimal places and thousands separator)
  * @param {number} value - Value to format
  * @returns {string} - Formatted string
  */
 export const formatCurrency = (value) => {
-  return Number(value).toFixed(2);
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(value);
 }; 
