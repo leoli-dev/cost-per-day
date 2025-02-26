@@ -54,7 +54,7 @@ function ItemList() {
   };
 
   return (
-    <div className="pb-20">
+    <div>
       {/* Header Total - 使用渐变背景 */}
       <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-4">
         <div className="text-center">

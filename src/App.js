@@ -7,8 +7,8 @@ import Footer from './components/Footer';
 function App() {
   return (
     <Router>
-      <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 min-h-screen bg-gray-50">
-        <div className="pb-20"> {/* Add padding for footer */}
+      <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 h-full bg-gray-50 flex flex-col">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden pb-20"> {/* 添加 overflow 控制 */}
           <Routes>
             <Route path="/" element={<ItemList />} />
             <Route path="/add" element={<AddItem />} />
