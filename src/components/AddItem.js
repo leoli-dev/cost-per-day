@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoTrashOutline } from "react-icons/io5";
+import { IoHomeOutline, IoAddOutline, IoSettingsOutline, IoTrashOutline, IoArrowBack, IoCalendarOutline } from "react-icons/io5";
 import { zhCN } from 'date-fns/locale';
 import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 import { formatDate } from '../utils/formatters';
 
 function AddItem() {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [purchaseDate, setPurchaseDate] = useState(new Date());
@@ -123,9 +125,17 @@ function AddItem() {
     <div className="pb-20 min-h-screen">
       {/* Header */}
       <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-6">
-        <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg">
-          {isEditMode ? '编辑物品' : '添加新物品'}
-        </h1>
+        <div className="flex items-center">
+          <button 
+            className="text-white p-1 rounded-full hover:bg-white/20 transition-colors"
+            onClick={() => navigate('/')}
+          >
+            <IoArrowBack className="text-2xl" />
+          </button>
+          <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg ml-3">
+            {isEditMode ? t('editItem') : t('addNewItem')}
+          </h1>
+        </div>
       </div>
 
       <div className="px-4">
@@ -216,7 +226,7 @@ function AddItem() {
               disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
               disabled={!isFormValid}
             >
-              保存
+              {t('save')}
             </button>
 
             {isEditMode && (
@@ -228,7 +238,7 @@ function AddItem() {
                 onClick={() => setShowDeleteConfirm(true)}
               >
                 <IoTrashOutline className="text-xl" />
-                删除物品
+                {t('deleteItem')}
               </button>
             )}
           </div>
@@ -280,22 +290,22 @@ function AddItem() {
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end justify-center sm:items-center p-4 z-50">
           <div className="bg-white w-full max-w-sm rounded-2xl p-6 space-y-4 shadow-xl">
-            <h2 className="text-xl font-semibold text-gray-800">确认删除</h2>
-            <p className="text-gray-600">确定要删除这个物品吗？此操作不可撤销。</p>
+            <h2 className="text-xl font-semibold text-gray-800">{t('confirmDelete')}</h2>
+            <p className="text-gray-600">{t('deleteConfirmation')}</p>
             <div className="flex gap-3 pt-2">
               <button 
                 className="flex-1 py-3 px-4 rounded-xl bg-gray-100 text-gray-700 font-medium
                 hover:bg-gray-200 transition-colors duration-200"
                 onClick={() => setShowDeleteConfirm(false)}
               >
-                取消
+                {t('cancel')}
               </button>
               <button 
                 className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-red-500 to-red-600 
                 text-white font-medium hover:from-red-600 hover:to-red-700 transition-all duration-200"
                 onClick={handleDelete}
               >
-                确认删除
+                {t('confirm')}
               </button>
             </div>
           </div>
