@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IoChevronDown, IoCloudDownloadOutline, IoCloudUploadOutline } from 'react-icons/io5';
+import { getAllSettings, updateSetting } from '../services/db';
 
 function Settings() {
-  const [language, setLanguage] = useState('中文');
+  const [languageCode, setLanguageCode] = useState('en');
   const [currency, setCurrency] = useState('$');
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   const languageRef = useRef(null);
   const currencyRef = useRef(null);
@@ -21,6 +23,30 @@ function Settings() {
     { symbol: '€', name: '欧元 (EUR)' },
     { symbol: '¥', name: '人民币 (CNY)' }
   ];
+
+  // 根据语言代码获取语言名称
+  const getLanguageName = (code) => {
+    const language = languages.find(lang => lang.code === code);
+    return language ? language.name : 'English';
+  };
+
+  // 加载设置
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        setIsLoading(true);
+        const settings = await getAllSettings();
+        setLanguageCode(settings.language || 'en');
+        setCurrency(settings.currency || '$');
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSettings();
+  }, []);
 
   // 处理点击外部关闭下拉菜单
   useEffect(() => {
@@ -38,6 +64,56 @@ function Settings() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // 更新语言设置
+  const handleLanguageChange = async (code) => {
+    try {
+      setLanguageCode(code);
+      await updateSetting('language', code);
+    } catch (error) {
+      console.error('Error updating language:', error);
+    }
+    setShowLanguageDropdown(false);
+  };
+
+  // 更新货币设置
+  const handleCurrencyChange = async (curr) => {
+    try {
+      setCurrency(curr);
+      await updateSetting('currency', curr);
+    } catch (error) {
+      console.error('Error updating currency:', error);
+    }
+    setShowCurrencyDropdown(false);
+  };
+
+  // 导出数据
+  const handleExportData = async () => {
+    try {
+      // 导出功能将在后续实现
+      alert('导出功能即将推出');
+    } catch (error) {
+      console.error('Error exporting data:', error);
+    }
+  };
+
+  // 导入数据
+  const handleImportData = async () => {
+    try {
+      // 导入功能将在后续实现
+      alert('导入功能即将推出');
+    } catch (error) {
+      console.error('Error importing data:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-purple-600">加载中...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -59,7 +135,7 @@ function Settings() {
               className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none"
               onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
             >
-              <span>{language}</span>
+              <span>{getLanguageName(languageCode)}</span>
               <IoChevronDown className={`transition-transform ${showLanguageDropdown ? 'rotate-180' : ''}`} />
             </button>
             
@@ -76,10 +152,7 @@ function Settings() {
                     <button
                       key={lang.code}
                       className="w-full text-left p-4 hover:bg-purple-50 transition-colors border-b border-gray-100 last:border-0"
-                      onClick={() => {
-                        setLanguage(lang.name);
-                        setShowLanguageDropdown(false);
-                      }}
+                      onClick={() => handleLanguageChange(lang.code)}
                     >
                       {lang.name}
                     </button>
@@ -117,10 +190,7 @@ function Settings() {
                     <button
                       key={curr.symbol}
                       className="w-full text-left p-4 hover:bg-purple-50 transition-colors border-b border-gray-100 last:border-0"
-                      onClick={() => {
-                        setCurrency(curr.symbol);
-                        setShowCurrencyDropdown(false);
-                      }}
+                      onClick={() => handleCurrencyChange(curr.symbol)}
                     >
                       {curr.symbol} {curr.name}
                     </button>
@@ -141,6 +211,7 @@ function Settings() {
               className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-blue-500 to-purple-600 
               text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 
               transition-all duration-200 shadow-md hover:shadow-lg"
+              onClick={handleExportData}
             >
               <IoCloudDownloadOutline className="text-xl" />
               导出数据
@@ -150,6 +221,7 @@ function Settings() {
               className="w-full flex items-center justify-center gap-2 p-3 bg-white border border-purple-200
               text-purple-600 rounded-lg font-medium hover:bg-purple-50
               transition-all duration-200 shadow-sm hover:shadow"
+              onClick={handleImportData}
             >
               <IoCloudUploadOutline className="text-xl" />
               导入数据
