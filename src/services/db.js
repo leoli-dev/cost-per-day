@@ -3,8 +3,8 @@ const DB_VERSION = 1;
 const ITEMS_STORE_NAME = 'items';
 const SETTINGS_STORE_NAME = 'settings';
 
-// 默认设置
-const DEFAULT_SETTINGS = {
+// 默认设置 - 现在直接导出
+export const DEFAULT_SETTINGS = {
   language: 'en',
   currency: '$'
 };

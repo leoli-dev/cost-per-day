@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoChevronDown, IoCloudDownloadOutline, IoCloudUploadOutline } from 'react-icons/io5';
 import { getAllSettings, updateSetting } from '../services/db';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function Settings() {
-  const [languageCode, setLanguageCode] = useState('en');
+  const { t } = useTranslation();
+  const { language, changeLanguage } = useLanguage();
+  
   const [currency, setCurrency] = useState('$');
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
@@ -19,15 +23,15 @@ function Settings() {
   ];
 
   const currencies = [
-    { symbol: '$', name: '美元 (USD)' },
-    { symbol: '€', name: '欧元 (EUR)' },
-    { symbol: '¥', name: '人民币 (CNY)' }
+    { symbol: '$', name: t('usd') },
+    { symbol: '€', name: t('eur') },
+    { symbol: '¥', name: t('cny') }
   ];
 
   // 根据语言代码获取语言名称
   const getLanguageName = (code) => {
-    const language = languages.find(lang => lang.code === code);
-    return language ? language.name : 'English';
+    const lang = languages.find(lang => lang.code === code);
+    return lang ? lang.name : 'English';
   };
 
   // 加载设置
@@ -36,7 +40,6 @@ function Settings() {
       try {
         setIsLoading(true);
         const settings = await getAllSettings();
-        setLanguageCode(settings.language || 'en');
         setCurrency(settings.currency || '$');
       } catch (error) {
         console.error('Error loading settings:', error);
@@ -67,12 +70,7 @@ function Settings() {
 
   // 更新语言设置
   const handleLanguageChange = async (code) => {
-    try {
-      setLanguageCode(code);
-      await updateSetting('language', code);
-    } catch (error) {
-      console.error('Error updating language:', error);
-    }
+    await changeLanguage(code);
     setShowLanguageDropdown(false);
   };
 
@@ -90,8 +88,7 @@ function Settings() {
   // 导出数据
   const handleExportData = async () => {
     try {
-      // 导出功能将在后续实现
-      alert('导出功能即将推出');
+      alert(t('comingSoon'));
     } catch (error) {
       console.error('Error exporting data:', error);
     }
@@ -100,8 +97,7 @@ function Settings() {
   // 导入数据
   const handleImportData = async () => {
     try {
-      // 导入功能将在后续实现
-      alert('导入功能即将推出');
+      alert(t('comingSoon'));
     } catch (error) {
       console.error('Error importing data:', error);
     }
@@ -110,7 +106,7 @@ function Settings() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-purple-600">加载中...</div>
+        <div className="text-purple-600">{t('loading')}</div>
       </div>
     );
   }
@@ -120,7 +116,7 @@ function Settings() {
       {/* Header */}
       <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-6">
         <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg">
-          设置
+          {t('settings')}
         </h1>
       </div>
 
@@ -128,14 +124,14 @@ function Settings() {
         {/* Language Selector */}
         <div className="bg-white rounded-xl shadow-md">
           <div className="p-4 border-b border-gray-100">
-            <h2 className="text-lg font-medium text-gray-800">语言</h2>
+            <h2 className="text-lg font-medium text-gray-800">{t('language')}</h2>
           </div>
           <div className="p-4" ref={languageRef}>
             <button
               className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none"
               onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
             >
-              <span>{getLanguageName(languageCode)}</span>
+              <span>{getLanguageName(language)}</span>
               <IoChevronDown className={`transition-transform ${showLanguageDropdown ? 'rotate-180' : ''}`} />
             </button>
             
@@ -146,7 +142,7 @@ function Settings() {
                   onClick={e => e.stopPropagation()}
                 >
                   <div className="p-3 border-b border-gray-100 bg-purple-50">
-                    <h3 className="text-center font-medium text-purple-800">选择语言</h3>
+                    <h3 className="text-center font-medium text-purple-800">{t('selectLanguage')}</h3>
                   </div>
                   {languages.map((lang) => (
                     <button
@@ -166,7 +162,7 @@ function Settings() {
         {/* Currency Selector */}
         <div className="bg-white rounded-xl shadow-md">
           <div className="p-4 border-b border-gray-100">
-            <h2 className="text-lg font-medium text-gray-800">货币</h2>
+            <h2 className="text-lg font-medium text-gray-800">{t('currency')}</h2>
           </div>
           <div className="p-4" ref={currencyRef}>
             <button
@@ -184,7 +180,7 @@ function Settings() {
                   onClick={e => e.stopPropagation()}
                 >
                   <div className="p-3 border-b border-gray-100 bg-purple-50">
-                    <h3 className="text-center font-medium text-purple-800">选择货币</h3>
+                    <h3 className="text-center font-medium text-purple-800">{t('selectCurrency')}</h3>
                   </div>
                   {currencies.map((curr) => (
                     <button
@@ -204,7 +200,7 @@ function Settings() {
         {/* Data Management */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="p-4 border-b border-gray-100">
-            <h2 className="text-lg font-medium text-gray-800">数据管理</h2>
+            <h2 className="text-lg font-medium text-gray-800">{t('dataManagement')}</h2>
           </div>
           <div className="p-4 space-y-3">
             <button 
@@ -214,7 +210,7 @@ function Settings() {
               onClick={handleExportData}
             >
               <IoCloudDownloadOutline className="text-xl" />
-              导出数据
+              {t('exportData')}
             </button>
             
             <button 
@@ -224,14 +220,14 @@ function Settings() {
               onClick={handleImportData}
             >
               <IoCloudUploadOutline className="text-xl" />
-              导入数据
+              {t('importData')}
             </button>
           </div>
         </div>
 
         {/* Version Info */}
         <div className="text-center text-gray-500 text-sm mt-8">
-          <p>版本 0.1.0</p>
+          <p>{t('version')} 0.1.0</p>
         </div>
       </div>
     </div>
