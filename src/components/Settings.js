@@ -281,26 +281,27 @@ function Settings() {
   }
 
   return (
-    <div className="pb-20 min-h-screen overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-6">
-        <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg">
-          {t('settings')}
-        </h1>
-      </div>
-
-      {/* Notification */}
-      {notification && (
-        <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg
-          ${notification.type === 'success' ? 'bg-green-500' : 
-            notification.type === 'warning' ? 'bg-yellow-500' : 'bg-red-500'} 
-          text-white font-medium`}
-        >
-          {notification.message}
+    <div>
+      <div className="bg-gradient-to-br from-blue-500 to-purple-600 page-header">
+        <div className="text-center py-4">
+          <h1 className="text-2xl font-bold text-white">
+            {t('settings')}
+          </h1>
         </div>
-      )}
+      </div>
+      
+      <div className="px-4 space-y-6 page-content mt-4">
+        {/* Notification */}
+        {notification && (
+          <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg
+            ${notification.type === 'success' ? 'bg-green-500' : 
+              notification.type === 'warning' ? 'bg-yellow-500' : 'bg-red-500'} 
+            text-white font-medium`}
+          >
+            {notification.message}
+          </div>
+        )}
 
-      <div className="px-4 space-y-6">
         {/* Language Selector */}
         <div className="bg-white rounded-xl shadow-md">
           <div className="p-4 border-b border-gray-100">

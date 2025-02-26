@@ -581,3 +581,31 @@ h1 {
   font-weight: 600;
   color: #6b7280;
 }
+
+/* Add these styles to fix the spacing issues */
+.page-header {
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-image: linear-gradient(to right, #3b82f6, #8b5cf6);
+}
+
+.page-content {
+  padding-bottom: calc(65px + env(safe-area-inset-bottom));
+}
+
+/* Update footer styles to take less space */
+.app-footer {
+  height: calc(65px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.footer-icon {
+  font-size: 1.75rem;
+}
+
+.footer-add-icon {
+  font-size: 2rem;
+}

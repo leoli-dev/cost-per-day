@@ -13,7 +13,7 @@ function App() {
       <PageMetadata />
       <Router>
         <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 h-full bg-gray-50 flex flex-col">
-          <div className="flex-1 overflow-y-auto overflow-x-hidden pb-20"> {/* 添加 overflow 控制 */}
+          <div className="flex-1 overflow-y-auto overflow-x-hidden">
             <Routes>
               <Route path="/" element={<ItemList />} />
               <Route path="/add" element={<AddItem />} />
