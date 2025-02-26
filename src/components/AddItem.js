@@ -217,7 +217,7 @@ function AddItem() {
   };
 
   return (
-    <div className="pb-20 min-h-screen">
+    <div className="pb-20 min-h-screen overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-6">
         <div className="flex items-center">

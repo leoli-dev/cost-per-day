@@ -112,7 +112,7 @@ function Settings() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="pb-20 min-h-screen overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-6">
         <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg">
