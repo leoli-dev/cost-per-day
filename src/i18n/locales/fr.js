@@ -55,5 +55,16 @@ export default {
   // Notifications
   "noDataForExport": "Pas de données à exporter",
   "exportSuccess": "Données exportées avec succès",
-  "exportError": "Échec de l'exportation des données"
+  "exportError": "Échec de l'exportation des données",
+  
+  // Import/Export
+  "invalidFileFormat": "Format de fichier invalide. Veuillez sélectionner un fichier .json",
+  "invalidJsonFormat": "Format JSON invalide dans le fichier",
+  "errorReadingFile": "Erreur lors de la lecture du fichier",
+  "invalidDataFormat": "Format de données invalide. Impossible d'importer",
+  "duplicateIds": "Des IDs en double ont été trouvés dans les données. Veuillez corriger et réessayer",
+  "importWarning": "Avertissement d'importation",
+  "importConfirmation": "L'importation de données remplacera complètement toutes les données existantes. Voulez-vous continuer ?",
+  "importSuccess": "Données importées avec succès",
+  "importError": "Échec de l'importation des données"
 }; 

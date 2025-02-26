@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IoChevronDown, IoCloudDownloadOutline, IoCloudUploadOutline } from 'react-icons/io5';
+import { IoChevronDown, IoCloudDownloadOutline, IoCloudUploadOutline, IoWarningOutline } from 'react-icons/io5';
 import { getAllSettings, updateSetting } from '../services/db';
-import { getAllItems } from '../services/db';
+import { getAllItems, deleteAllItems, addItem } from '../services/db';
 import { useLanguage } from '../contexts/LanguageContext';
 
 function Settings() {
@@ -14,9 +14,12 @@ function Settings() {
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState(null);
+  const [showImportConfirm, setShowImportConfirm] = useState(false);
+  const [importData, setImportData] = useState(null);
   
   const languageRef = useRef(null);
   const currencyRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const languages = [
     { code: 'en', name: 'English' },
@@ -145,12 +148,127 @@ function Settings() {
     }
   };
 
-  // 导入数据
-  const handleImportData = async () => {
+  // Import data function
+  const handleImportData = () => {
+    // Trigger file input click
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  
+  // Handle file selection
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Check file type
+    if (!file.name.endsWith('.json')) {
+      setNotification({
+        message: t('invalidFileFormat'),
+        type: 'error'
+      });
+      setTimeout(() => setNotification(null), 3000);
+      event.target.value = ''; // Reset file input
+      return;
+    }
+    
     try {
-      alert(t('comingSoon'));
+      // Read file content
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const content = JSON.parse(e.target.result);
+          validateAndProcessImport(content);
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+          setNotification({
+            message: t('invalidJsonFormat'),
+            type: 'error'
+          });
+          setTimeout(() => setNotification(null), 3000);
+        }
+      };
+      reader.readAsText(file);
+    } catch (error) {
+      console.error('Error reading file:', error);
+      setNotification({
+        message: t('errorReadingFile'),
+        type: 'error'
+      });
+      setTimeout(() => setNotification(null), 3000);
+    }
+    
+    // Reset file input
+    event.target.value = '';
+  };
+  
+  // Validate import data
+  const validateAndProcessImport = (data) => {
+    // Check if data is an array
+    if (!Array.isArray(data)) {
+      setNotification({
+        message: t('invalidDataFormat'),
+        type: 'error'
+      });
+      setTimeout(() => setNotification(null), 3000);
+      return;
+    }
+    
+    // Check if each item has required fields
+    for (const item of data) {
+      if (!item.id || !item.name || !item.price || !item.purchaseDate) {
+        setNotification({
+          message: t('invalidDataFormat'),
+          type: 'error'
+        });
+        setTimeout(() => setNotification(null), 3000);
+        return;
+      }
+    }
+    
+    // Check for duplicate IDs
+    const ids = data.map(item => item.id);
+    if (new Set(ids).size !== ids.length) {
+      setNotification({
+        message: t('duplicateIds'),
+        type: 'error'
+      });
+      setTimeout(() => setNotification(null), 3000);
+      return;
+    }
+    
+    // Data is valid, store it and show confirmation dialog
+    setImportData(data);
+    setShowImportConfirm(true);
+  };
+  
+  // Perform the actual import
+  const confirmImport = async () => {
+    try {
+      // Clear existing data
+      await deleteAllItems();
+      
+      // Import new data
+      for (const item of importData) {
+        await addItem(item);
+      }
+      
+      // Show success notification
+      setNotification({
+        message: t('importSuccess'),
+        type: 'success'
+      });
+      setTimeout(() => setNotification(null), 3000);
+      
+      // Close confirmation dialog
+      setShowImportConfirm(false);
     } catch (error) {
       console.error('Error importing data:', error);
+      setNotification({
+        message: t('importError'),
+        type: 'error'
+      });
+      setTimeout(() => setNotification(null), 3000);
     }
   };
 
@@ -284,6 +402,15 @@ function Settings() {
               <IoCloudUploadOutline className="text-xl" />
               {t('importData')}
             </button>
+            
+            {/* Hidden file input */}
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              className="hidden"
+              accept=".json"
+              onChange={handleFileChange}
+            />
           </div>
         </div>
 
@@ -292,6 +419,35 @@ function Settings() {
           <p>{t('version')} 0.1.0</p>
         </div>
       </div>
+      
+      {/* Import Confirmation Dialog */}
+      {showImportConfirm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end justify-center sm:items-center p-4 z-50">
+          <div className="bg-white w-full max-w-sm rounded-2xl p-6 space-y-4 shadow-xl">
+            <div className="flex items-center gap-3 text-amber-500">
+              <IoWarningOutline className="text-2xl" />
+              <h2 className="text-xl font-semibold text-gray-800">{t('importWarning')}</h2>
+            </div>
+            <p className="text-gray-600">{t('importConfirmation')}</p>
+            <div className="flex gap-3 pt-2">
+              <button 
+                className="flex-1 py-3 px-4 rounded-xl bg-gray-100 text-gray-700 font-medium
+                hover:bg-gray-200 transition-colors duration-200"
+                onClick={() => setShowImportConfirm(false)}
+              >
+                {t('cancel')}
+              </button>
+              <button 
+                className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 
+                text-white font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-200"
+                onClick={confirmImport}
+              >
+                {t('confirm')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

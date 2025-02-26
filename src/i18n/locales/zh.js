@@ -55,5 +55,16 @@ export default {
   // Notifications
   "noDataForExport": "没有可导出的数据",
   "exportSuccess": "数据导出成功",
-  "exportError": "数据导出失败"
+  "exportError": "数据导出失败",
+  
+  // Import/Export
+  "invalidFileFormat": "文件格式无效。请选择.json文件",
+  "invalidJsonFormat": "文件中的JSON格式无效",
+  "errorReadingFile": "读取文件时出错",
+  "invalidDataFormat": "数据格式不正确，无法导入",
+  "duplicateIds": "数据中id有重复，请改正后重试",
+  "importWarning": "导入警告",
+  "importConfirmation": "导入数据会完全覆盖现有数据，是否继续？",
+  "importSuccess": "数据导入成功",
+  "importError": "数据导入失败"
 }; 

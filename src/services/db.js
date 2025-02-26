@@ -181,4 +181,13 @@ export const updateSetting = async (key, value) => {
       reject(request.error);
     };
   });
+};
+
+/**
+ * Delete all items from the database
+ * @returns {Promise<void>}
+ */
+export const deleteAllItems = async () => {
+  const db = await initDB();
+  return db.transaction(ITEMS_STORE_NAME, 'readwrite').objectStore(ITEMS_STORE_NAME).clear();
 }; 
