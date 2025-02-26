@@ -46,13 +46,13 @@ function Footer() {
         </button>
         <button 
           className="relative p-5 group"
-          onClick={() => handleIconClick('settings')}
+          onClick={() => handleIconClick('settings', '/settings')}
         >
           <div className={`absolute inset-[8px] rounded-full transition-all duration-300 
             ${activeIcon === 'settings' ? 'bg-purple-600 scale-100' : 'bg-transparent scale-50 opacity-0'}`} 
           />
           <IoSettingsOutline className={`text-3xl relative z-10 transition-colors duration-300
-            ${activeIcon === 'settings' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
+            ${activeIcon === 'settings' ? 'text-white' : location.pathname === '/settings' ? 'text-purple-800' : 'text-purple-600 group-hover:text-purple-800'}`} 
           />
         </button>
       </div>
