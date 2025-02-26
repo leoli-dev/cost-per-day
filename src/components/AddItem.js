@@ -141,83 +141,80 @@ function AddItem() {
       <div className="px-4">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm text-gray-600 font-medium">物品名称</label>
+            <label className="text-sm text-gray-600 font-medium">{t('itemName')}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              placeholder="请输入物品名称"
+              placeholder={t('enterItemName')}
               className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
               focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
             />
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm text-gray-600 font-medium">购买金额 ($)</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              min="0.01"
-              step="0.01"
-              required
-              placeholder="请输入大于0的金额"
-              className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
-              focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200 font-orbitron"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm text-gray-600 font-medium">购买日期</label>
-            <div className="relative date-picker-container">
+            <label className="text-sm text-gray-600 font-medium">{t('price')}</label>
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">$</div>
               <input
-                type="text"
-                value={formatDate(purchaseDate)}
-                onClick={() => setShowDatePicker(true)}
-                readOnly
-                className="w-full px-4 py-3 rounded-xl border border-purple-100 focus:border-purple-300 
-                focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200 cursor-pointer"
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                min="0.01"
+                step="0.01"
+                placeholder={t('enterPrice')}
+                className="w-full px-4 py-3 pl-8 rounded-xl border border-purple-100 focus:border-purple-300 
+                focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200"
               />
-              
-              {showDatePicker && (
-                <div 
-                  className="fixed inset-0 z-50" 
-                  style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
-                  onClick={(e) => {
-                    if (e.target === e.currentTarget) {
-                      setShowDatePicker(false);
-                    }
-                  }}
-                >
-                  <div 
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
-                    bg-white rounded-xl shadow-lg border border-purple-100 overflow-hidden"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <DayPicker
-                      mode="single"
-                      selected={purchaseDate}
-                      onSelect={(date) => {
-                        if (date) {
-                          setPurchaseDate(date);
-                          setShowDatePicker(false);
-                        }
-                      }}
-                      locale={zhCN}
-                      maxDate={new Date()}
-                      modifiersClassNames={{
-                        selected: 'bg-purple-600 text-white hover:bg-purple-700',
-                        today: 'text-purple-600 font-bold',
-                      }}
-                      className="p-3"
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           </div>
-
+          
+          <div className="space-y-2">
+            <label className="text-sm text-gray-600 font-medium">{t('date')}</label>
+            <button 
+              type="button"
+              className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-purple-100 
+              focus:border-purple-300 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-200
+              text-left"
+              onClick={() => setShowDatePicker(!showDatePicker)}
+            >
+              {formatDate(purchaseDate)}
+              <div className="text-purple-500">
+                <IoCalendarOutline className="text-lg" />
+              </div>
+            </button>
+            
+            {showDatePicker && (
+              <div className="relative z-30 date-picker-container">
+                <div 
+                  className="fixed inset-0 bg-black/20 z-30" 
+                  onClick={() => setShowDatePicker(false)}
+                ></div>
+                <div className="absolute z-40 mt-2 bg-white rounded-xl shadow-xl overflow-hidden border border-purple-100 w-full">
+                  <DayPicker
+                    mode="single"
+                    selected={purchaseDate}
+                    onSelect={(date) => {
+                      if (date) {
+                        setPurchaseDate(date);
+                        setShowDatePicker(false);
+                      }
+                    }}
+                    defaultMonth={purchaseDate}
+                    locale={zhCN}
+                    toDate={new Date()}
+                    modifiersClassNames={{
+                      selected: 'bg-purple-600 text-white',
+                      today: 'text-red-500 font-bold'
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+          
           <div className="space-y-4 pt-4">
             <button 
               type="submit" 
@@ -272,7 +269,8 @@ function AddItem() {
               ${activeIcon === 'add' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
             />
           </Link>
-          <button 
+          <Link 
+            to="/settings"
             className="relative p-4 group"
             onClick={() => handleIconClick('settings')}
           >
@@ -282,7 +280,7 @@ function AddItem() {
             <IoSettingsOutline className={`text-2xl relative z-10 transition-colors duration-300
               ${activeIcon === 'settings' ? 'text-white' : 'text-purple-600 group-hover:text-purple-800'}`} 
             />
-          </button>
+          </Link>
         </div>
       </div>
 

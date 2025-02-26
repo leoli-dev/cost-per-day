@@ -1,48 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { IoHomeOutline, IoHome, IoAddCircleOutline, IoAddCircle, IoSettingsOutline, IoSettings } from 'react-icons/io5';
+import { IoHomeOutline, IoAddOutline, IoSettingsOutline } from "react-icons/io5";
 
 function Footer() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const [activeIcon, setActiveIcon] = useState(null);
   const location = useLocation();
-  
-  const isActive = (path) => {
-    return location.pathname === path;
+  const navigate = useNavigate();
+
+  const handleIconClick = (iconName, path) => {
+    setActiveIcon(iconName);
+    setTimeout(() => {
+      setActiveIcon(null);
+    }, 1000);
+    if (path) {
+      setTimeout(() => {
+        navigate(path);
+      }, 150);
+    }
   };
   
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 flex justify-around items-center z-20">
-      <button 
-        className={`flex flex-col items-center p-2 rounded-xl transition-colors ${isActive('/') ? 'text-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
-        onClick={() => navigate('/')}
-      >
-        {isActive('/') ? <IoHome className="text-2xl" /> : <IoHomeOutline className="text-2xl" />}
-        <span className="text-xs mt-1">
-          {t('appName')}
-        </span>
-      </button>
-      
-      <button 
-        className={`flex flex-col items-center p-2 rounded-xl transition-colors ${isActive('/add') ? 'text-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
-        onClick={() => navigate('/add')}
-      >
-        {isActive('/add') ? <IoAddCircle className="text-2xl" /> : <IoAddCircleOutline className="text-2xl" />}
-        <span className="text-xs mt-1">
-          {t('addNewItem')}
-        </span>
-      </button>
-      
-      <button 
-        className={`flex flex-col items-center p-2 rounded-xl transition-colors ${isActive('/settings') ? 'text-purple-600' : 'text-gray-500 hover:text-gray-700'}`}
-        onClick={() => navigate('/settings')}
-      >
-        {isActive('/settings') ? <IoSettings className="text-2xl" /> : <IoSettingsOutline className="text-2xl" />}
-        <span className="text-xs mt-1">
-          {t('settings')}
-        </span>
-      </button>
+    <div className="fixed bottom-0 left-0 right-0 backdrop-blur-md bg-white/90 border-t border-purple-100">
+      <div className="max-w-lg mx-auto px-4 py-3 flex justify-around items-center">
+        <button 
+          className="relative p-5 group"
+          onClick={() => handleIconClick('home', '/')}
+        >
+          <div className={`absolute inset-[8px] rounded-full transition-all duration-300 
+            ${activeIcon === 'home' ? 'bg-purple-600 scale-100' : 'bg-transparent scale-50 opacity-0'}`} 
+          />
+          <IoHomeOutline className={`text-3xl relative z-10 transition-colors duration-300
+            ${activeIcon === 'home' ? 'text-white' : location.pathname === '/' ? 'text-purple-800' : 'text-purple-600 group-hover:text-purple-800'}`} 
+          />
+        </button>
+        <button 
+          className="relative p-5 group"
+          onClick={() => handleIconClick('add', '/add')}
+        >
+          <div className={`absolute inset-[8px] rounded-full transition-all duration-300 
+            ${activeIcon === 'add' ? 'bg-purple-600 scale-100' : 'bg-transparent scale-50 opacity-0'}`} 
+          />
+          <IoAddOutline className={`text-4xl relative z-10 transition-colors duration-300
+            ${activeIcon === 'add' ? 'text-white' : location.pathname === '/add' ? 'text-purple-800' : 'text-purple-600 group-hover:text-purple-800'}`} 
+          />
+        </button>
+        <button 
+          className="relative p-5 group"
+          onClick={() => handleIconClick('settings', '/settings')}
+        >
+          <div className={`absolute inset-[8px] rounded-full transition-all duration-300 
+            ${activeIcon === 'settings' ? 'bg-purple-600 scale-100' : 'bg-transparent scale-50 opacity-0'}`} 
+          />
+          <IoSettingsOutline className={`text-3xl relative z-10 transition-colors duration-300
+            ${activeIcon === 'settings' ? 'text-white' : location.pathname === '/settings' ? 'text-purple-800' : 'text-purple-600 group-hover:text-purple-800'}`} 
+          />
+        </button>
+      </div>
     </div>
   );
 }
