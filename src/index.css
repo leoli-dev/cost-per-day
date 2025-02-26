@@ -600,14 +600,14 @@ h1 {
 .app-footer {
   height: 65px;
   padding-bottom: env(safe-area-inset-bottom);
-  display: flex;
-  align-items: center;
 }
 
 .footer-icon {
   font-size: 1.75rem;
+  margin: 12px 0;
 }
 
 .footer-add-icon {
   font-size: 2rem;
+  margin: 10px 0;
 }
