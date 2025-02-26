@@ -40,12 +40,6 @@ function ItemList() {
     navigate('/edit', { state: { item } });
   };
 
-  const handleDeleteClick = (e, item) => {
-    e.stopPropagation();
-    setItemToDelete(item);
-    setShowDeleteModal(true);
-  };
-
   const confirmDelete = async () => {
     if (itemToDelete) {
       await deleteItem(itemToDelete.id);
@@ -109,12 +103,6 @@ function ItemList() {
                     </p>
                   </div>
                   <div className="flex items-center">
-                    <button
-                      className="p-1.5 text-red-500 hover:bg-red-50 rounded-full mr-2"
-                      onClick={(e) => handleDeleteClick(e, item)}
-                    >
-                      <IoTrash />
-                    </button>
                     <IoChevronDown 
                       className={`text-purple-500 transition-transform ${expandedItem === item.id ? 'rotate-180' : ''}`} 
                     />

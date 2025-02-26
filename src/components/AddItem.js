@@ -220,19 +220,11 @@ function AddItem() {
     <div className="pb-20 min-h-screen overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8 mb-6">
-        <div className="flex items-center">
-          <button 
-            className="text-white p-1 rounded-full hover:bg-white/20 transition-colors"
-            onClick={() => navigate('/')}
-          >
-            <IoArrowBack className="text-2xl" />
-          </button>
-          <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg ml-3">
-            {isEditMode ? t('editItem') : t('addNewItem')}
-          </h1>
-        </div>
+        <h1 className="text-2xl font-semibold text-white text-center drop-shadow-lg">
+          {isEditMode ? t('editItem') : t('addNewItem')}
+        </h1>
       </div>
-
+      
       <div className="px-4">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
