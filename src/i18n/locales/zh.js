@@ -50,5 +50,10 @@ export default {
   // Alerts
   "comingSoon": "即将推出",
   "appTitle": "每日成本",
-  "appDescription": "计算物品的每日使用成本"
+  "appDescription": "计算物品的每日使用成本",
+  
+  // Notifications
+  "noDataForExport": "没有可导出的数据",
+  "exportSuccess": "数据导出成功",
+  "exportError": "数据导出失败"
 }; 

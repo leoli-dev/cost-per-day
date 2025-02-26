@@ -50,5 +50,10 @@ export default {
   // Alerts
   "comingSoon": "Bientôt disponible",
   "appTitle": "Coût Par Jour",
-  "appDescription": "Calculez le coût quotidien de vos articles"
+  "appDescription": "Calculez le coût quotidien de vos articles",
+  
+  // Notifications
+  "noDataForExport": "Pas de données à exporter",
+  "exportSuccess": "Données exportées avec succès",
+  "exportError": "Échec de l'exportation des données"
 }; 

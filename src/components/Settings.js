@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoChevronDown, IoCloudDownloadOutline, IoCloudUploadOutline } from 'react-icons/io5';
 import { getAllSettings, updateSetting } from '../services/db';
+import { getAllItems } from '../services/db';
 import { useLanguage } from '../contexts/LanguageContext';
 
 function Settings() {
@@ -12,6 +13,7 @@ function Settings() {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [notification, setNotification] = useState(null);
   
   const languageRef = useRef(null);
   const currencyRef = useRef(null);
@@ -85,12 +87,61 @@ function Settings() {
     setShowCurrencyDropdown(false);
   };
 
-  // 导出数据
+  // Export data function
   const handleExportData = async () => {
     try {
-      alert(t('comingSoon'));
+      // Get all items from database
+      const items = await getAllItems();
+      
+      // Check if there's any data to export
+      if (!items || items.length === 0) {
+        setNotification({
+          message: t('noDataForExport'),
+          type: 'warning'
+        });
+        
+        // Clear notification after 3 seconds
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000);
+        return;
+      }
+      
+      // Create a data URL for the JSON file
+      const dataStr = JSON.stringify(items, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+      
+      // Create download link and trigger click
+      const exportFileDefaultName = `cost-per-day-export-${new Date().toISOString().split('T')[0]}.json`;
+      
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+      
+      // Show success notification
+      setNotification({
+        message: t('exportSuccess'),
+        type: 'success'
+      });
+      
+      // Clear notification after 3 seconds
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
     } catch (error) {
       console.error('Error exporting data:', error);
+      
+      // Show error notification
+      setNotification({
+        message: t('exportError'),
+        type: 'error'
+      });
+      
+      // Clear notification after 3 seconds
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
     }
   };
 
@@ -119,6 +170,17 @@ function Settings() {
           {t('settings')}
         </h1>
       </div>
+
+      {/* Notification */}
+      {notification && (
+        <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg
+          ${notification.type === 'success' ? 'bg-green-500' : 
+            notification.type === 'warning' ? 'bg-yellow-500' : 'bg-red-500'} 
+          text-white font-medium`}
+        >
+          {notification.message}
+        </div>
+      )}
 
       <div className="px-4 space-y-6">
         {/* Language Selector */}

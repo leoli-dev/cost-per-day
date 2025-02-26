@@ -50,5 +50,10 @@ export default {
   "cny": "Chinese Yuan (CNY)",
   
   // Alerts
-  "comingSoon": "Coming soon"
+  "comingSoon": "Coming soon",
+  
+  // Notifications
+  "noDataForExport": "No data for exporting",
+  "exportSuccess": "Data exported successfully",
+  "exportError": "Failed to export data"
 }; 
