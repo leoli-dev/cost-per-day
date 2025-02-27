@@ -2,6 +2,10 @@
 
 A progressive web application that helps you track the daily cost of your purchased items. Calculate how much your possessions cost you per day from the purchase date until now.
 
+<div style="text-align: center;">
+  <img src="./public/preview.png" alt="drawing" width="200"/>
+</div>
+
 ## Features
 
 - **Daily Cost Calculation**: Automatically calculates the cost per day for each item
