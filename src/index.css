@@ -554,7 +554,7 @@ h1 {
 
 @layer utilities {
   .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: 65px;
   }
 }
 
@@ -589,14 +589,14 @@ h1 {
   left: 0;
   right: 0;
   z-index: 10;
-  padding-top: max(16px, env(safe-area-inset-top));
+  padding-top: 16px;
   background-image: linear-gradient(to right, #3b82f6, #8b5cf6);
 }
 
 .page-content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: calc(65px + env(safe-area-inset-bottom));
+  padding-bottom: 65px;
   height: 100%;
   width: 100%;
 }
@@ -621,7 +621,7 @@ h1 {
   left: 0;
   right: 0;
   height: 65px;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: 65px;
   z-index: 10;
   backdrop-filter: blur(12px);
   background-color: rgba(255, 255, 255, 0.9);
