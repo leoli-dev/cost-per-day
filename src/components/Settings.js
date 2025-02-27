@@ -4,12 +4,13 @@ import { IoChevronDown, IoCloudDownloadOutline, IoCloudUploadOutline, IoWarningO
 import { getAllSettings, updateSetting } from '../services/db';
 import { getAllItems, deleteAllItems, addItem } from '../services/db';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 function Settings() {
   const { t } = useTranslation();
   const { language, changeLanguage } = useLanguage();
+  const { currency, changeCurrency } = useCurrency();
   
-  const [currency, setCurrency] = useState('$');
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,21 +40,12 @@ function Settings() {
     return lang ? lang.name : 'English';
   };
 
-  // 加载设置
   useEffect(() => {
-    const loadSettings = async () => {
-      try {
-        setIsLoading(true);
-        const settings = await getAllSettings();
-        setCurrency(settings.currency || '$');
-      } catch (error) {
-        console.error('Error loading settings:', error);
-      } finally {
-        setIsLoading(false);
-      }
+    // Just check for loading state
+    const checkLoading = async () => {
+      setIsLoading(false);
     };
-
-    loadSettings();
+    checkLoading();
   }, []);
 
   // 处理点击外部关闭下拉菜单
@@ -82,8 +74,7 @@ function Settings() {
   // 更新货币设置
   const handleCurrencyChange = async (curr) => {
     try {
-      setCurrency(curr);
-      await updateSetting('currency', curr);
+      await changeCurrency(curr);
     } catch (error) {
       console.error('Error updating currency:', error);
     }

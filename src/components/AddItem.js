@@ -10,6 +10,7 @@ import { fr } from 'date-fns/locale/fr';
 import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 import { formatDate } from '../utils/formatters';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 // Custom date picker caption component
 function CustomCaption({ date, locale, goToMonth, goToYear }) {
@@ -100,6 +101,7 @@ function AddItem() {
   const location = useLocation();
   const [activeIcon, setActiveIcon] = useState(null);
   const [month, setMonth] = useState(purchaseDate);
+  const { currency } = useCurrency();
   
   // Get locale matching the current language
   const getLocale = () => {
@@ -254,7 +256,7 @@ function AddItem() {
             <div className="space-y-2">
               <label className="text-sm text-gray-600 font-medium">{t('price')}</label>
               <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">$</div>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">{currency}</div>
                 <input
                   type="number"
                   value={price}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { CurrencyProvider, useCurrency } from './contexts/CurrencyContext';
 import ItemList from './components/ItemList';
 import AddItem from './components/AddItem';
 import Settings from './components/Settings';
@@ -15,6 +16,7 @@ const Header = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const { totalDailyCost } = useTotalCost();
+  const { currency } = useCurrency();
   
   const getTitle = () => {
     switch(location.pathname) {
@@ -37,7 +39,7 @@ const Header = () => {
         </h1>
         {location.pathname === '/' && (
           <p className="text-white text-4xl font-orbitron font-bold tracking-wider mt-2">
-            ${formatCurrency(totalDailyCost)}<span className="text-lg">{t('perDay')}</span>
+            {currency}{formatCurrency(totalDailyCost)}<span className="text-lg">{t('perDay')}</span>
           </p>
         )}
       </div>
@@ -74,14 +76,16 @@ function AppContent() {
 function App() {
   return (
     <LanguageProvider>
-      <PageMetadata />
-      <TotalCostProvider>
-        <Router>
-          <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 h-full bg-gray-50 flex flex-col">
-            <AppContent />
-          </div>
-        </Router>
-      </TotalCostProvider>
+      <CurrencyProvider>
+        <PageMetadata />
+        <TotalCostProvider>
+          <Router>
+            <div className="mx-auto max-w-[1024px] sm:border-x sm:border-gray-200 h-full bg-gray-50 flex flex-col">
+              <AppContent />
+            </div>
+          </Router>
+        </TotalCostProvider>
+      </CurrencyProvider>
     </LanguageProvider>
   );
 }

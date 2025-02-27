@@ -7,6 +7,7 @@ import { formatCurrency, formatDate } from '../utils/formatters';
 import { calculateDailyCost, formatCurrency as calculateCurrency } from '../utils/costCalculator';
 import { format, differenceInDays } from 'date-fns';
 import { useTotalCost } from '../contexts/TotalCostContext';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 function ItemList() {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ function ItemList() {
   const [itemToDelete, setItemToDelete] = useState(null);
   const navigate = useNavigate();
   const { setTotalDailyCost } = useTotalCost();
+  const { currency } = useCurrency();
 
   useEffect(() => {
     const loadItems = async () => {
@@ -89,7 +91,7 @@ function ItemList() {
               <div>
                 <h3 className="font-medium text-gray-900">{item.name}</h3>
                 <p className="text-sm text-gray-500">
-                  ${formatCurrency(calculateDailyCost(item.price, item.purchaseDate))}{t('perDay')}
+                  {currency}{formatCurrency(calculateDailyCost(item.price, item.purchaseDate))}{t('perDay')}
                 </p>
               </div>
               <div className="flex items-center">
@@ -112,7 +114,7 @@ function ItemList() {
                     </div>
                     <div className="ml-3">
                       <div className="text-xs text-gray-500">{t('purchaseAmount')}</div>
-                      <div className="font-medium">${formatCurrency(item.price)}</div>
+                      <div className="font-medium">{currency}{formatCurrency(item.price)}</div>
                     </div>
                   </div>
                   
