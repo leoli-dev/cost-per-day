@@ -11,6 +11,7 @@ import { addItem, updateItem, getAllItems, deleteItem } from '../services/db';
 import { formatDate } from '../utils/formatters';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCurrency } from '../contexts/CurrencyContext';
+import { startOfDay, parseISO } from 'date-fns';
 
 // Custom date picker caption component
 function CustomCaption({ date, locale, goToMonth, goToYear }) {
@@ -87,12 +88,21 @@ function CustomCaption({ date, locale, goToMonth, goToYear }) {
   );
 }
 
+// Helper function to set time to noon UTC
+const setToNoonUTC = (date) => {
+  const newDate = new Date(date);
+  newDate.setUTCHours(12, 0, 0, 0);
+  return newDate;
+};
+
 function AddItem() {
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
-  const [purchaseDate, setPurchaseDate] = useState(new Date());
+  const [purchaseDate, setPurchaseDate] = useState(() => {
+    return setToNoonUTC(new Date());
+  });
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
@@ -161,7 +171,7 @@ function AddItem() {
           setEditIndex(item.id);
           setName(item.name);
           setPrice(item.price.toString());
-          setPurchaseDate(new Date(item.purchaseDate));
+          setPurchaseDate(setToNoonUTC(parseISO(item.purchaseDate)));
         } catch (error) {
           console.error('Error loading item:', error);
           navigate('/');
@@ -194,7 +204,7 @@ function AddItem() {
     const itemData = {
       name: name.trim(),
       price: Number(price),
-      purchaseDate: purchaseDate.toISOString(),
+      purchaseDate: setToNoonUTC(purchaseDate).toISOString(),
     };
 
     try {
@@ -308,7 +318,7 @@ function AddItem() {
                   value={purchaseDate.toISOString().split('T')[0]}
                   onChange={(e) => {
                     if (e.target.value) {
-                      setPurchaseDate(new Date(e.target.value));
+                      setPurchaseDate(setToNoonUTC(new Date(e.target.value)));
                     }
                   }}
                   max={new Date().toISOString().split('T')[0]}
@@ -365,7 +375,7 @@ function AddItem() {
                         selected={purchaseDate}
                         onSelect={(date) => {
                           if (date) {
-                            setPurchaseDate(date);
+                            setPurchaseDate(setToNoonUTC(date));
                             setShowDatePicker(false);
                           }
                         }}
